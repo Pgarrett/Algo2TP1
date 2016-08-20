@@ -1,0 +1,34 @@
+\documentclass[a4paper]{article}
+
+\usepackage[spanish]{babel} % Le indicamos a LaTeX que vamos a escribir en espa�ol.
+\usepackage[latin1]{inputenc} % Permite utilizar tildes y e�es normalmente
+%\usepackage{framed}
+\input{Algo1Macros}% Macros especificas para especificar problemas en AyEDI
+
+\newcommand{\comen}[2]{%
+\begin{framed}
+\noindent \textsf{#1:} #2
+\end{framed}
+}
+\begin{document}
+
+\maketitle
+
+\section{TAD Tipo es String}
+\section{TAD Pokemones es Diccionario(Nat, Tipo)}
+\section{TAD Coordenada es Tupla(Nat, Nat)}
+
+\section{TAD Juego}
+\begin{tipo}{Juego}
+    \observador{mapa}{Juego}{(Mapa)}
+    \observador{jugadores}{Juego}{conj(Jugador)}
+    \observador{pokemones}{Juego}{Pokemones}
+    \observador{posicionPokemon}{Nat n, Juego j}{Coordenada[n \in pokemones(j)]}
+    \observador{posicionJugador}{Jugador j, Juego pGo}{Coordenada[j \in jugadores(pGo)]}
+    \invariante[nuevoJuego]{Mapa \rightarrow Juego}
+    \invariante[agJugador]{Jugador j, Coordenada c, Juego pGo \rightarrow Juego [esValida(c, pGo) \land L  puedeJugar(j,pGo)]}
+    \invariante[agJugador]{Nat n, Tipo t, Coordenada c, Juego pGo \rightarrow Juego [n \notin pokemones(j) \land L esValidaPokemon(c, pGo)]}
+    \invariante[informarPosicion]{Jugador j, Coordenada c, Juego pGo \rightarrow Juego [puedeMoverse(j, pGo) \land L esValidaEnJuego(c, pGo)]}
+\end{tipo}
+
+\end{document}
