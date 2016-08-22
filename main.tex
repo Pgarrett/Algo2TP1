@@ -1,34 +1,43 @@
-\documentclass[a4paper]{article}
+\documentclass[10pt, a4paper]{article}
+% especifico margenes manualmente
+\usepackage[paper=a4paper, left=1.5cm, right=1.5cm, bottom=1.5cm, top=3.5cm]{geometry}
+% codificacion ISO-8859-1
+\usepackage[latin1]{inputenc}
+% separacion silabica en castellano
+\usepackage[spanish]{babel}
+% paquetes y caratula de algo2
+\usepackage{aed2-symb,aed2-itef,aed2-tad,caratula}
 
-\usepackage[spanish]{babel} % Le indicamos a LaTeX que vamos a escribir en espa�ol.
-\usepackage[latin1]{inputenc} % Permite utilizar tildes y e�es normalmente
-%\usepackage{framed}
-\input{Algo1Macros}% Macros especificas para especificar problemas en AyEDI
 
-\newcommand{\comen}[2]{%
-\begin{framed}
-\noindent \textsf{#1:} #2
-\end{framed}
-}
 \begin{document}
+
+% Estos comandos deben ir antes del \maketitle
+\materia{Algoritmos y Estructuras de Datos II} % obligatorio
+\submateria{Segundo Cuatrimestre de 2016} % opcional
+\titulo{Trabajo Practico 1} % obligatorio
+\subtitulo{Especificacion} % opcional
+\grupo{Grupo 1} % opcional 
+
+\integrante{Integrante 1}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
+\integrante{Integrante 2}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
+\integrante{Integrante 3}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
+\integrante{Integrante 4}{Nro/YY}{mail@dc.uba.ar} % obligatorio 
 
 \maketitle
 
-\section{TAD Tipo es String}
-\section{TAD Pokemones es Diccionario(Nat, Tipo)}
-\section{TAD Coordenada es Tupla(Nat, Nat)}
+% compilar 2 veces para actualizar las referencias
+\tableofcontents
 
-\section{TAD Juego}
-\begin{tipo}{Juego}
-    \observador{mapa}{Juego}{(Mapa)}
-    \observador{jugadores}{Juego}{conj(Jugador)}
-    \observador{pokemones}{Juego}{Pokemones}
-    \observador{posicionPokemon}{Nat n, Juego j}{Coordenada[n \in pokemones(j)]}
-    \observador{posicionJugador}{Jugador j, Juego pGo}{Coordenada[j \in jugadores(pGo)]}
-    \invariante[nuevoJuego]{Mapa \rightarrow Juego}
-    \invariante[agJugador]{Jugador j, Coordenada c, Juego pGo \rightarrow Juego [esValida(c, pGo) \land L  puedeJugar(j,pGo)]}
-    \invariante[agJugador]{Nat n, Tipo t, Coordenada c, Juego pGo \rightarrow Juego [n \notin pokemones(j) \land L esValidaPokemon(c, pGo)]}
-    \invariante[informarPosicion]{Jugador j, Coordenada c, Juego pGo \rightarrow Juego [puedeMoverse(j, pGo) \land L esValidaEnJuego(c, pGo)]}
-\end{tipo}
+\pagebreak
+%\newpage
+
+
+\section{Especificacion}
+Esta es una especificacion del Trabajo Practico numero 1 del 2$^{do}$ cuatrimestre del 2016 presentada por la catedra para la realizacion del Trabajo Practico 2. Ver enunciado:\\
+\verb+http://www.dc.uba.ar/materias/aed2/2016/2c/descargas/tps/tp1-enunciado/view+\\
+
+
+\input{especificacion}
+
 
 \end{document}
