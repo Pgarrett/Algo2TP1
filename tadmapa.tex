@@ -1,0 +1,26 @@
+%%%%%%%%%%%%%%%%%%%% MAPA
+\section{TAD \tadNombre{Mapa}}
+\begin{tad}{\tadNombre{Mapa}}
+	\tadGeneros{mapa}
+	
+	\tadObservadores
+	\tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Coordenada/c2, Mapa/m, bool}
+	
+    \tadOperacion{posiciones}{Mapa/m}{Conj(Coordenada)}{}
+    \tadOperacion{existeCamino}{Coordenada/c1, Coordenada/c2, Mapa/m}{bool}{}
+
+
+	\tadGeneradores
+	\tadAlinearFunciones{agCoordenada~}{Coordenada/c, Conj(Coordenada)/cs, Mapa/m, Mapa}
+	
+    \tadOperacion{crear}{}{Mapa}{}{}
+    \tadOperacion{agCoordenada}{Coordenada/c, Conj(Coordenada)/cs, Mapa/m}{Mapa}
+    	{cs $\subseteq$ posiciones(m) $\land$ c $\notin$ posiciones(m)}
+    	
+    \tadOtrasOperaciones
+    \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
+    \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs )$\in$ posiciones(m)}{}
+
+
+    
+\end{tad}

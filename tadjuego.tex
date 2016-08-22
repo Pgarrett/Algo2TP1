@@ -1,0 +1,38 @@
+%%%%%%%%%%%%%%%%%%%% Renombres
+\section{Renombres de TADs}
+
+\tadNombre{TAD Tipo} es \tadNombre{String}
+
+\tadNombre{TAD Pokemones} es \tadNombre{Diccionario(Nat, Tipo)}
+
+\tadNombre{TAD Coordenada} es \tadNombre{Tupla(Nat, Nat)}
+
+
+%%%%%%%%%%%%%%%%%%%% Juego
+\section{TAD \tadNombre{Juego}}
+\begin{tad}{\tadNombre{Juego}}
+	\tadGeneros{juego}
+	
+	\tadObservadores
+	\tadAlinearFunciones{posicionJugador~}{Jugador/j, Juego/pGo, Coordenada}
+	
+    \tadOperacion{mapa}{Juego}{Mapa}{}
+    \tadOperacion{jugadores}{Juego}{conj(Jugador)}{}
+    \tadOperacion{pokemones}{Juego}{Pokemones}{}
+    \tadOperacion{posicionPokemon}{Nat/n, Juego/j}{Coordenada}
+    		{def?(n,pokemones(j))}
+    \tadOperacion{posicionJugador}{Jugador/j, Juego/pGo}{Coordenada}
+    	{j $\in$ jugadores(pGo)}
+
+	\tadGeneradores
+	\tadAlinearFunciones{informarPosicion~}{Jugador/j, Coordenada/c, Juego/pGo, Juego}
+	
+    \tadOperacion{nuevoJuego}{Mapa}{Juego}{}{}
+    \tadOperacion{agJugador}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
+    	{esValida(c, pGo) $\yluego$ puedeJugar(j,pGo)}
+    \tadOperacion{agPokemon}{Nat/n, Tipo/t, Coordenada/c, Juego/pGo}{Juego}
+    	{n $\notin$ pokemones(j) $\yluego$ esValidaPokemon(c, pGo)}
+    \tadOperacion{informarPosicion}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
+    	{puedeMoverse(j, pGo) $\yluego$ esValidaEnJuego(c, pGo)}
+    
+\end{tad}
