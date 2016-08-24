@@ -1,0 +1,16 @@
+%%%%%%%%%%%%%%%%%%%% Juego
+\section{TAD \tadNombre{Jugador}}
+\begin{tad}{\tadNombre{Jugador}}
+	\tadGeneros{jugador}
+	
+	\tadObservadores
+	\tadAlinearFunciones{cantidadSanciones~}{Jugador/j, Juego/pGo, Nat}
+	
+    \tadOperacion{estado}{Jugador}{Bool}{}
+    \tadOperacion{cantidadSanciones}{Jugador}{Nat}{}
+    \tadOperacion{pokedex}{Jugador}{Pokemones}{}
+    \tadOperacion{id}{Jugador/j, Juego/pGo}{Nat}
+    		{j $\in$ jugadores(pGo)}
+	
+    
+\end{tad}
