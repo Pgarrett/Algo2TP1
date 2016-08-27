@@ -19,10 +19,14 @@
 	
     \tadOperacion{nuevoJuego}{Mapa}{Juego}{}{}
     \tadOperacion{agJugador}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
-    	{esValida(c, pGo) $\yluego$ puedeJugar(j,pGo)}
+    	{esValida(c, pGo) $\yluego$ id(j) $\notin$ jugadores(pGo)}
     \tadOperacion{agPokemon}{Nat/n, Tipo/t, Coordenada/c, Juego/pGo}{Juego}
     	{n $\notin$ pokemones(j) $\yluego$ esValidaPokemon(c, pGo)}
     \tadOperacion{informarPosicion}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
     	{puedeMoverse(j, pGo) $\yluego$ esValidaEnJuego(c, pGo)}
+    	
+    \tadOtrasOperaciones
+    \tadAlinearFunciones{atraparPokemon~}{Pokemon/p, Jugador/j, Juego/pGo, Juego}
+    \tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j, Juego/pGo}{Juego}{}
     
 \end{tad}

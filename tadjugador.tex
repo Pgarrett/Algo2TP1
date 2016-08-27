@@ -1,4 +1,4 @@
-%%%%%%%%%%%%%%%%%%%% Juego
+%%%%%%%%%%%%%%%%%%%% Jugador
 \section{TAD \tadNombre{Jugador}}
 \begin{tad}{\tadNombre{Jugador}}
 	\tadGeneros{jugador}
@@ -9,8 +9,13 @@
     \tadOperacion{estado}{Jugador}{Bool}{}
     \tadOperacion{cantidadSanciones}{Jugador}{Nat}{}
     \tadOperacion{pokedex}{Jugador}{Pokemones}{}
-    \tadOperacion{id}{Jugador/j, Juego/pGo}{Nat}
-    		{j $\in$ jugadores(pGo)}
-	
+    \tadOperacion{id}{Jugador/j}{Nat}{}
+    \tadOperacion{esperandoParaAtrapar}{Jugador}{Bool}{}
+    \tadOperacion{cantidadMovimientos}{}{}{}
+    
+    \tadGeneradores
+    
+    \tadOperacion{nuevoJugador}{Nat n}{Jugador}{}
+	\tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j}{Jugador}{}
     
 \end{tad}
