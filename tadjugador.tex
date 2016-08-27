@@ -3,11 +3,11 @@
 \begin{tad}{\tadNombre{Jugador}}
 
 \tadIgualdadObservacional{j}{j'}{Jugador}
-                         {((estado(j) $\igobs$ estado(j')) $\land$ \\
+                         {(estado(j) $\igobs$ estado(j')) $\land$ \\
                           (cantidadSanciones(j)$\igobs$ cantidadSanciones(j')) $\land$ \\
 (pokedex(j)$\igobs$ pokedex(j')) $\land$ \\ 
-((estado(j) $\igobs$ estado(j')) $\land$ \\
- ((esperandoParaAtrapar(j) $\igobs$ esperandoParaAtrapar(j')) $\land$ \\ ((cantidadMovimientos(j) $\igobs$ cantidadMovimientos(j'))  }
+(estado(j) $\igobs$ estado(j')) $\land$ \\
+ (cantidadMovimientos(j) $\igobs$ cantidadMovimientos(j'))  }
 
 	\tadGeneros{jugador}
 	\tadExporta{Jugador, generadores, observadores}
@@ -16,13 +16,12 @@
         \tadNombre{Pokemones}}    	
 	
 	\tadObservadores
-	\tadAlinearFunciones{esperandoParaAtrapar~}{Jugador, Bool}
+	\tadAlinearFunciones{cantidadMovimientos~}{Jugador, Bool}
 	
     \tadOperacion{estado}{Jugador}{Bool}{}
     \tadOperacion{cantidadSanciones}{Jugador}{Nat}{}
     \tadOperacion{pokedex}{Jugador}{Pokemones}{}
     \tadOperacion{id}{Jugador}{Nat}{}
-    \tadOperacion{esperandoParaAtrapar}{Jugador}{Bool}{}
     \tadOperacion{cantidadMovimientos}{Jugador}{Nat}{}
 
 	\tadGeneradores
@@ -36,7 +35,6 @@
 	\tadAxioma{cantidadSanciones(crearJugador(id))}{0}
 	\tadAxioma{pokedex(crearJugador(id))}{vacio}
 	\tadAxioma{id(crearJugador(id))}{id}
-	\tadAxioma{esperandoParaAtrapar(crearJugador(id))}{false}
 	\tadAxioma{cantidadMovimientos(crearJugador(id))}{0}
 
 	
