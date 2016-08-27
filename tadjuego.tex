@@ -10,8 +10,8 @@
     \tadOperacion{mapa}{Juego}{Mapa}{}
     \tadOperacion{jugadores}{Juego}{conj(Jugador)}{}
     \tadOperacion{pokemones}{Juego}{Pokemones}{}
-    \tadOperacion{posicionPokemon}{Nat/n, Juego/j}{Coordenada}
-    		{def?(n,pokemones(j))}
+    \tadOperacion{posicionPokemon}{Pokemon/p, Juego/j}{Coordenada}
+    		{def?($\Pi_1$(p),pokemones(j))}
     \tadOperacion{posicionJugador}{Jugador/j, Juego/pGo}{Coordenada}
     	{j $\in$ jugadores(pGo)}
 
@@ -36,13 +36,25 @@
     \tadOperacion{esPosicionValidaEnJuego}{Coordenada/c, Juego/j}{bool}{}
 
 	%%% Axiomas %%%
-	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j_{1},j_{2}} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo}]
+	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
+
+	%%% nuevoJuego
 	\tadAxioma{mapa(nuevoJuego(m))}{m}
 	\tadAxioma{jugadores(nuevoJuego(m))}{$\emptyset$}
 	\tadAxioma{pokemones(nuevoJuego(m))}{$\emptyset$} %%% ver vacio de diccionario
+
+	%%% agJugador
 	\tadAxioma{mapa(agJugador(j, c, pGo))}{mapa(pGo)}
 	\tadAxioma{jugadores(agJugador(j, c, pGo))}{Ag(j, jugadores(pGo))}
 	\tadAxioma{pokemones(agJugador(j, c, pGo))}{pokemones(pGo)}
-	\tadAxioma{posicionPokemon(n, agJugador(j, c, pGo))}{posicionPokemon(n, pGo)}
+	\tadAxioma{posicionPokemon(p, agJugador(j, c, pGo))}{posicionPokemon(p, pGo)}
+	\tadAxioma{posicionJugador(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN c ELSE posicionJugador(j1, pGo) FI}
+
+	%%% agPokemon
+	\tadAxioma{mapa(agPokemon(n, t, c, pGo))}{mapa(pGo)}
+	\tadAxioma{jugadores(agPokemon(n, t, c, pGo))}{jugadores(pGo)}
+	\tadAxioma{pokemones(agPokemon(n, t, c, pGo))}{definir(n, t, pokemones(pGo))}
+	\tadAxioma{posicionPokemon(p, agPokemon(n, t, c, pGo))}{\IF $\Pi_1$(p) = n THEN c ELSE posicionPokemon(p, pGo) FI}
+	\tadAxioma{posicionJugador(j, agPokemon(n, t, c, pGo))}{posicionJugador(j, pGo)}
     
 \end{tad}
