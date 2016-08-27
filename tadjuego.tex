@@ -19,14 +19,17 @@
 	
     \tadOperacion{nuevoJuego}{Mapa}{Juego}{}{}
     \tadOperacion{agJugador}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
-    	{esValida(c, pGo) $\yluego$ id(j) $\notin$ jugadores(pGo)}
+    	{esPosicionValidaJugador(c, pGo) $\yluego$ id(j) $\notin$ jugadores(pGo)}
     \tadOperacion{agPokemon}{Nat/n, Tipo/t, Coordenada/c, Juego/pGo}{Juego}
-    	{n $\notin$ pokemones(j) $\yluego$ esValidaPokemon(c, pGo)}
+    	{n $\notin$ pokemones(j) $\yluego$ esPosicionValidaPokemon(c, pGo)}
     \tadOperacion{informarPosicion}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
-    	{puedeMoverse(j, pGo) $\yluego$ esValidaEnJuego(c, pGo)}
+    	{puedeMoverse(j, pGo) $\yluego$ esPosicionValidaEnJuego(c, pGo)}
     	
     \tadOtrasOperaciones
-    \tadAlinearFunciones{atraparPokemon~}{Pokemon/p, Jugador/j, Juego/pGo, Juego}
+    \tadAlinearFunciones{esPosicionValidaPokemon~}{Pokemon/p, Jugador/j, Juego/pGo, Juego}
     \tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j, Juego/pGo}{Juego}{}
+    \tadOperacion{esPosicionValidaJugador}{Coordenada/c, Juego/j}{bool}{}
+    \tadOperacion{esPosicionValidaPokemon}{Coordenada/c, Juego/j}{bool}{}
+    \tadOperacion{esPosicionValidaEnJuego}{Coordenada/c, Juego/j}{bool}{}
     
 \end{tad}

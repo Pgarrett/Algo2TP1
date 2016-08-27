@@ -10,20 +10,10 @@
  ((esperandoParaAtrapar(j) $\igobs$ esperandoParaAtrapar(j')) $\land$ \\ ((cantidadMovimientos(j) $\igobs$ cantidadMovimientos(j'))  }
 
 	\tadGeneros{jugador}
-	\tadExporta{Jugador,
-            generadores,
-            observadores}
+	\tadExporta{Jugador, generadores, observadores}
 \tadUsa{\tadNombre{Bool},
         \tadNombre{Nat},
-        \tadNombre{Pokemones}}
-	
-	
-	\tadGeneradores
-	\tadAlinearFunciones{crearJugador~}{Nat/id, Jugador}
-	
-    \tadOperacion{crearJugador}{Nat/id}{Jugador}
-    	{}
-    	
+        \tadNombre{Pokemones}}    	
 	
 	\tadObservadores
 	\tadAlinearFunciones{esperandoParaAtrapar~}{Jugador, Bool}
@@ -34,6 +24,12 @@
     \tadOperacion{id}{Jugador}{Nat}{}
     \tadOperacion{esperandoParaAtrapar}{Jugador}{Bool}{}
     \tadOperacion{cantidadMovimientos}{Jugador}{Nat}{}
+
+	\tadGeneradores
+	\tadAlinearFunciones{crearJugador~}{Nat/id, Jugador}
+	
+    \tadOperacion{crearJugador}{Nat/id}{Jugador}{}
+    \tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j}{Jugador}{}
     		
     \tadAxiomas
     		
