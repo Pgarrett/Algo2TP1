@@ -32,17 +32,11 @@
     \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
     \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs )$\in$ posiciones(m)}{}
     
-        \tadAxiomas
-
-\tadAxioma{posiciones(crear)}
-          {$\emptyset$}
-\tadAxioma{posiciones(agCoordenada(Coordenada/c, Conj(Coordenada)/cs, Mapa/m))}
-          {Ag(c, posiciones(m))}
-\tadAxioma{existeCamino(Coordenada/c1, Coordenada/c2, crear)}
-          {false}
-          
-\tadAxioma{existeCamino(Coordenada/c1, Coordenada/c2,agCoordenada(Coordenada/c, Conj(Coordenada)/cs, Mapa/m))}
-          {c1 == c $\land$ c2 $\in$ cs}
+    \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
+	\tadAxioma{posiciones(crear)}{$\emptyset$}
+	\tadAxioma{posiciones(agCoordenada(c, cs, m))}{Ag(c, posiciones(m))}
+	\tadAxioma{existeCamino(c1, c2, crear)}{false}
+	\tadAxioma{existeCamino(c1, c2, agCoordenada(c, cs, m))}{c1 == c $\land$ c2 $\in$ cs}
 
 
     

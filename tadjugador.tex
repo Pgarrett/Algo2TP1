@@ -26,25 +26,18 @@
     \tadOperacion{cantidadMovimientos}{Jugador}{Nat}{}
 
 	\tadGeneradores
-	\tadAlinearFunciones{crearJugador~}{Nat/id, Jugador}
+	\tadAlinearFunciones{atraparPokemon~}{Pokemon/p, Jugador/j, Jugador}
 	
     \tadOperacion{crearJugador}{Nat/id}{Jugador}{}
     \tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j}{Jugador}{}
     		
-    \tadAxiomas
-    		
-\tadAxioma{estado(crearJugador(id))}
-          {true}
-\tadAxioma{cantidadSanciones(crearJugador(id))}
-          {0}
-\tadAxioma{pokedex(crearJugador(id))}
-          {vacio}
-\tadAxioma{id(crearJugador(id))}
-          {id}
-\tadAxioma{esperandoParaAtrapar(crearJugador(id))}
-          {false}
-\tadAxioma{cantidadMovimientos(crearJugador(id))}
-          {0}
+    \tadAxiomas	
+	\tadAxioma{estado(crearJugador(id))}{true}
+	\tadAxioma{cantidadSanciones(crearJugador(id))}{0}
+	\tadAxioma{pokedex(crearJugador(id))}{vacio}
+	\tadAxioma{id(crearJugador(id))}{id}
+	\tadAxioma{esperandoParaAtrapar(crearJugador(id))}{false}
+	\tadAxioma{cantidadMovimientos(crearJugador(id))}{0}
 
 	
     

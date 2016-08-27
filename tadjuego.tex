@@ -41,9 +41,9 @@
 	%%% nuevoJuego
 	\tadAxioma{mapa(nuevoJuego(m))}{m}
 	\tadAxioma{jugadores(nuevoJuego(m))}{$\emptyset$}
-	\tadAxioma{pokemones(nuevoJuego(m))}{$\emptyset$} %%% ver vacio de diccionario
+	\tadAxioma{pokemones(nuevoJuego(m))}{$\emptyset$}
 
-	%%% agJugador
+	%%% agJugador ==> ver si tiene que informar posicion
 	\tadAxioma{mapa(agJugador(j, c, pGo))}{mapa(pGo)}
 	\tadAxioma{jugadores(agJugador(j, c, pGo))}{Ag(j, jugadores(pGo))}
 	\tadAxioma{pokemones(agJugador(j, c, pGo))}{pokemones(pGo)}
