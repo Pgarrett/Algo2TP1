@@ -1,21 +1,55 @@
-%%%%%%%%%%%%%%%%%%%% Jugador
+%%%%%%%%%%%%%%%%%%%% Juego
 \section{TAD \tadNombre{Jugador}}
 \begin{tad}{\tadNombre{Jugador}}
+
+\tadIgualdadObservacional{j}{j'}{Jugador}
+                         {((estado(j) $\igobs$ estado(j')) $\land$ \\
+                          (cantidadSanciones(j)$\igobs$ cantidadSanciones(j')) $\land$ \\
+(pokedex(j)$\igobs$ pokedex(j')) $\land$ \\ 
+((estado(j) $\igobs$ estado(j')) $\land$ \\
+ ((esperandoParaAtrapar(j) $\igobs$ esperandoParaAtrapar(j')) $\land$ \\ ((cantidadMovimientos(j) $\igobs$ cantidadMovimientos(j'))  }
+
 	\tadGeneros{jugador}
+	\tadExporta{Jugador,
+            generadores,
+            observadores}
+\tadUsa{\tadNombre{Bool},
+        \tadNombre{Nat},
+        \tadNombre{Pokemones}}
+	
+	
+	\tadGeneradores
+	\tadAlinearFunciones{crearJugador~}{Nat/id, Jugador}
+	
+    \tadOperacion{crearJugador}{Nat/id}{Jugador}
+    	{}
+    	
 	
 	\tadObservadores
-	\tadAlinearFunciones{cantidadSanciones~}{Jugador/j, Juego/pGo, Nat}
+	\tadAlinearFunciones{esperandoParaAtrapar~}{Jugador, Bool}
 	
     \tadOperacion{estado}{Jugador}{Bool}{}
     \tadOperacion{cantidadSanciones}{Jugador}{Nat}{}
     \tadOperacion{pokedex}{Jugador}{Pokemones}{}
-    \tadOperacion{id}{Jugador/j}{Nat}{}
+    \tadOperacion{id}{Jugador}{Nat}{}
     \tadOperacion{esperandoParaAtrapar}{Jugador}{Bool}{}
-    \tadOperacion{cantidadMovimientos}{}{}{}
-    
-    \tadGeneradores
-    
-    \tadOperacion{nuevoJugador}{Nat n}{Jugador}{}
-	\tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j}{Jugador}{}
+    \tadOperacion{cantidadMovimientos}{Jugador}{Nat}{}
+    		
+    \tadAxiomas
+    		
+\tadAxioma{estado(crearJugador(id))}
+          {true}
+\tadAxioma{cantidadSanciones(crearJugador(id))}
+          {0}
+\tadAxioma{pokedex(crearJugador(id))}
+          {vacio}
+\tadAxioma{id(crearJugador(id))}
+          {id}
+\tadAxioma{esperandoParaAtrapar(crearJugador(id))}
+          {false}
+\tadAxioma{cantidadMovimientos(crearJugador(id))}
+          {0}
+
+	
     
 \end{tad}

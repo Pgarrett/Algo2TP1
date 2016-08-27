@@ -2,6 +2,17 @@
 \section{TAD \tadNombre{Mapa}}
 \begin{tad}{\tadNombre{Mapa}}
 	\tadGeneros{mapa}
+	\tadIgualdadObservacional{m}{m'}{Mapa}
+                         {((posiciones(m) $\igobs$ posiciones(m')) $\land$ \\ 
+                         ($\forall$ c1,c2: Coordenada) \\
+                         (existeCamino(c1,c2,m)$\leftrightarrow$ existeCamino(c1,c2,m')) }
+
+		\tadExporta{Mapa,
+            generadores,
+            observadores}
+		\tadUsa{\tadNombre{Bool},
+        	\tadNombre{Coordenada},
+        	\tadNombre{Conj()}}
 	
 	\tadObservadores
 	\tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Coordenada/c2, Mapa/m, bool}
@@ -20,6 +31,18 @@
     \tadOtrasOperaciones
     \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
     \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs )$\in$ posiciones(m)}{}
+    
+        \tadAxiomas
+
+\tadAxioma{posiciones(crear)}
+          {vacio}
+\tadAxioma{posiciones(agCoordenada(Coordenada/c, Conj(Coordenada)/cs, Mapa/m))}
+          {Ag(c, posiciones(m))}
+\tadAxioma{existeCamino(Coordenada/c1, Coordenada/c2, crear)}
+          {false}
+          
+\tadAxioma{existeCamino(Coordenada/c1, Coordenada/c2,agCoordenada(Coordenada/c, Conj(Coordenada)/cs, Mapa/m))}
+          {c1 == c $\land$ c2 $\in$ cs}
 
 
     
