@@ -9,11 +9,11 @@
 	
     \tadOperacion{mapa}{Juego}{Mapa}{}
     \tadOperacion{jugadores}{Juego}{conj(Jugador)}{}
+    \tadOperacion{posicionJugador}{Jugador/j, Juego/pGo}{Coordenada}
+    	{j $\in$ jugadores(pGo)}
     \tadOperacion{pokemones}{Juego}{Pokemones}{}
     \tadOperacion{posicionPokemon}{Pokemon/p, Juego/j}{Coordenada}
     		{def?($\Pi_1$(p),pokemones(j))}
-    \tadOperacion{posicionJugador}{Jugador/j, Juego/pGo}{Coordenada}
-    	{j $\in$ jugadores(pGo)}
 
 	%%% Generadores %%%
 	\tadGeneradores
@@ -36,6 +36,7 @@
     \tadOperacion{esPosicionValidaPokemon}{Coordenada/c, Juego/j}{bool}{}
     \tadOperacion{esPosicionValidaEnJuego}{Coordenada/c, Juego/j}{bool}{}
     \tadOperacion{puedeMoverse}{Jugador/j, Juego/pGo}{bool}{}
+    \tadOperacion{actualizarContadores}{conj(Jugador)/cj, Coordenada/c, Juego pGo}{conj(Jugador)}{}
 
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
@@ -48,18 +49,23 @@
 	%%% agJugador ==> ver si tiene que informar posicion
 	\tadAxioma{mapa(agJugador(j, c, pGo))}{mapa(pGo)}
 	\tadAxioma{jugadores(agJugador(j, c, pGo))}{Ag(j, jugadores(pGo))}
+	\tadAxioma{posicionJugador(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN c ELSE posicionJugador(j1, pGo) FI}
 	\tadAxioma{pokemones(agJugador(j, c, pGo))}{pokemones(pGo)}
 	\tadAxioma{posicionPokemon(p, agJugador(j, c, pGo))}{posicionPokemon(p, pGo)}
-	\tadAxioma{posicionJugador(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN c ELSE posicionJugador(j1, pGo) FI}
 
 	%%% agPokemon
 	\tadAxioma{mapa(agPokemon(n, t, c, pGo))}{mapa(pGo)}
 	\tadAxioma{jugadores(agPokemon(n, t, c, pGo))}{jugadores(pGo)}
+	\tadAxioma{posicionJugador(j, agPokemon(n, t, c, pGo))}{posicionJugador(j, pGo)}
 	\tadAxioma{pokemones(agPokemon(n, t, c, pGo))}{definir(n, t, pokemones(pGo))}
 	\tadAxioma{posicionPokemon(p, agPokemon(n, t, c, pGo))}{\IF $\Pi_1$(p) = n THEN c ELSE posicionPokemon(p, pGo) FI}
-	\tadAxioma{posicionJugador(j, agPokemon(n, t, c, pGo))}{posicionJugador(j, pGo)}
 	
 	%%% informarPosicion
+	\tadAxioma{mapa(informarPosicion(j, c, pGo))}{mapa(pGo)}
+	%%% ver otra op posicionInvalida, puede ser esPosicionValida declarada arriba
+	\tadAxioma{jugadores(informarPosicion(j, c, pGo))}{\IF nula?(c) THEN jugadores(pGo) ELSE actualizarContadores({\IF posicionInvalida(posicionJugador(j, pGo), c, pGo) THEN {\IF cantidadSanciones(j) = 4 THEN jugadores(pGo) - {j} ELSE Ag(sancionar(j), jugadores(pGo) - {j}) FI} ELSE jugadores(pGo) FI}, c, pGo) FI}
 	\tadAxioma{posicionJugador(j1, informarPosicion(j2, c, pGo))}{\IF j1 $\neq$ j2 THEN posicionJugador(j1, pGo) ELSE {\IF nula?(c) THEN fueraDelMapa ELSE {\IF nula?(posicionJugador(j2, pGo)) THEN c ELSE {\IF posicionInvalida(c) THEN {\IF cantidadDeSanciones(j1) = 4 THEN fueraDelMapa ELSE c FI} ELSE c FI} FI} FI} FI}
+	\tadAxioma{pokemones(informarPosicion(j, c, pGo))}{}
+	\tadAxioma{posicionPokemon(informarPosicion(j, c, pGo))}{}
     
 \end{tad}
