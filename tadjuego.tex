@@ -26,6 +26,7 @@
     	{n $\notin$ pokemones(j) $\yluego$ esPosicionValidaPokemon(c, pGo)}
     \tadOperacion{informarPosicion}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
     	{puedeMoverse(j, pGo) $\yluego$ esPosicionValidaEnJuego(c, pGo)}
+    \tadOperacion{sumarEspera}{conj(jugador)/cj, Coordenada/c, Juego/pGo}{Juego}{}
     	
     %%% Otras Operaciones %%%
     \tadOtrasOperaciones
@@ -57,5 +58,8 @@
 	\tadAxioma{pokemones(agPokemon(n, t, c, pGo))}{definir(n, t, pokemones(pGo))}
 	\tadAxioma{posicionPokemon(p, agPokemon(n, t, c, pGo))}{\IF $\Pi_1$(p) = n THEN c ELSE posicionPokemon(p, pGo) FI}
 	\tadAxioma{posicionJugador(j, agPokemon(n, t, c, pGo))}{posicionJugador(j, pGo)}
+	
+	%%% informarPosicion
+	\tadAxioma{posicionJugador(j1, informarPosicion(j2, c, pGo))}{\IF j1 $\neq$ j2 THEN posicionJugador(j1, pGo) ELSE {\IF nula?(c) THEN fueraDelMapa ELSE {\IF nula?(posicionJugador(j2, pGo)) THEN c ELSE {\IF posicionInvalida(c) THEN {\IF cantidadDeSanciones(j1) = 4 THEN fueraDelMapa ELSE c FI} ELSE c FI} FI} FI} FI}
     
 \end{tad}
