@@ -3,11 +3,10 @@
 \begin{tad}{\tadNombre{Jugador}}
 
 \tadIgualdadObservacional{j}{j'}{Jugador}
-                         {(estado(j) $\igobs$ estado(j')) $\land$ \\
+                         {(id(j) $\igobs$ id(j')) $\land$ \\
                           (cantidadSanciones(j)$\igobs$ cantidadSanciones(j')) $\land$ \\
 (pokedex(j)$\igobs$ pokedex(j')) $\land$ \\ 
-(estado(j) $\igobs$ estado(j')) $\land$ \\
- (cantidadMovimientos(j) $\igobs$ cantidadMovimientos(j'))  }
+(esperaParaAtrapar(j) $\igobs$ esperaParaAtrapar(j'))}
 
 	\tadGeneros{jugador}
 	\tadExporta{Jugador, generadores, observadores}
@@ -16,27 +15,39 @@
         \tadNombre{Pokemones}}    	
 	
 	\tadObservadores
-	\tadAlinearFunciones{cantidadMovimientos~}{Jugador, Bool}
+	\tadAlinearFunciones{esperaParaAtrapar~}{Jugador, Bool}
 	
-    \tadOperacion{estado}{Jugador}{Bool}{}
-    \tadOperacion{cantidadSanciones}{Jugador}{Nat}{}
-    \tadOperacion{pokedex}{Jugador}{Pokemones}{}
     \tadOperacion{id}{Jugador}{Nat}{}
-    \tadOperacion{cantidadMovimientos}{Jugador}{Nat}{}
+    \tadOperacion{cantidadSanciones}{Jugador}{Nat}{}
+    \tadOperacion{pokedex}{Jugador}{Conj(Nat)}{}
+    \tadOperacion{esperaParaAtrapar}{Jugador}{Nat}{}
 
 	\tadGeneradores
-	\tadAlinearFunciones{atraparPokemon~}{Pokemon/p, Jugador/j, Jugador}
+	\tadAlinearFunciones{actualizarEspera~}{Pokemon/p, Jugador/j, Jugador}
 	
-    \tadOperacion{crearJugador}{Nat/id}{Jugador}{}
-    \tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j}{Jugador}{}
-    \tadOperacion{sancionar}{Jugador/j}{Jugador}{}
+    \tadOperacion{crearJugador}{Nat}{Jugador}{}
+    \tadOperacion{atraparPokemon}{Nat/p, Jugador/j}{Jugador}{p $\notin$ pokedex(j)}
+    \tadOperacion{sancionar}{Jugador}{Jugador}{}
+    \tadOperacion{actualizarEspera}{Bool, Jugador}{Jugador}{}
     		
-    \tadAxiomas	
-	\tadAxioma{estado(crearJugador(id))}{true}
+    \tadAxiomas	[\paratodo{Nat}{id,p} \paratodo{Jugador}{j} \paratodo{Bool}{reset}]
+    
+   	\tadAxioma{id(crearJugador(id))}{id}
 	\tadAxioma{cantidadSanciones(crearJugador(id))}{0}
-	\tadAxioma{pokedex(crearJugador(id))}{vacio}
-	\tadAxioma{id(crearJugador(id))}{id}
-	\tadAxioma{cantidadMovimientos(crearJugador(id))}{0}
+	\tadAxioma{pokedex(crearJugador(id))}{$\emptyset$}
+	\tadAxioma{esperaParaAtrapar(crearJugador(id))}{0}
+	\tadAxioma{id(atraparPokemon(p,j))}{id(j)}
+	\tadAxioma{cantidadSanciones(atraparPokemon(p,j))}{cantidadSanciones(j)}
+	\tadAxioma{pokedex(atraparPokemon(p,j))}{Ag(p,pokedex(j))}
+	\tadAxioma{esperaParaAtrapar(atraparPokemon(p,j))}{0}
+	\tadAxioma{id(sancionar(j)}{id(j)}
+	\tadAxioma{cantidadSanciones(sancionar(j)}{cantidadSanciones(j) + 1}
+	\tadAxioma{pokedex(sancionar(j))}{pokedex(j)}
+	\tadAxioma{esperaParaAtrapar(sancionar(j))}{esperaParaAtrapar(j)}
+	\tadAxioma{id(actualizarEspera(reset,j))}{id(j)}
+	\tadAxioma{cantidadSanciones(actualizarEspera(reset,j))}{cantidadSanciones(j)}
+	\tadAxioma{pokedex(actualizarEspera(reset,j))}{pokedex(j)}
+	\tadAxioma{esperaParaAtrapar(actualizarEspera(reset,j))}{\IF reset THEN 0 ELSE esperaParaAtrapar(j) + 1 FI}
 
 	
     

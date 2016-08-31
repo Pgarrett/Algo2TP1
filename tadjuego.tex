@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%% Juego
 \section{TAD \tadNombre{Juego}}
-\begin{tad}{\tadNombre{Juego}}
+\begin{tad}{\tadNombre{PokeMongo}}
 	\tadGeneros{juego}
 	
 	%%% Observadores %%%
@@ -38,6 +38,9 @@
     \tadOperacion{puedeMoverse}{Jugador/j, Juego/pGo}{bool}{}
     \tadOperacion{actualizarContadores}{conj(Jugador)/cj, Coordenada/c, Juego pGo}{conj(Jugador)}{}
     \tadOperacion{borrarPokemones}{Pokemones/p, conj(Nat)/ids}{Pokemones}{}
+	\tadOperacion{unoAtrapa}{conj(Jugador)/js, Juego/pGo}{conj(Jugador)}{js $\subseteq$ jugadores(pGo)}
+	\tadOperacion{posicionJugadores}{Coordenada/c, Juegao/pGo}{conj(Jugador)}{c $\in$ posiciones(mapa(pGo))}    
+    
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
 
@@ -67,6 +70,7 @@
 	\tadAxioma{posicionJugador(j1, informarPosicion(j2, c, pGo))}{\IF j1 $\neq$ j2 THEN posicionJugador(j1, pGo) ELSE {\IF nula?(c) THEN fueraDelMapa ELSE {\IF nula?(posicionJugador(j2, pGo)) THEN c ELSE {\IF posicionInvalida(c) THEN {\IF cantidadDeSanciones(j1) = 4 THEN fueraDelMapa ELSE c FI} ELSE c FI} FI} FI} FI}
 	\tadAxioma{pokemones(informarPosicion(j, c, pGo))}{\IF nula?(c) THEN pokemones(pGo) ELSE {\IF (posicionInvalida(posicionJugador(j, pGo), c, pGo) $\land$ cantidadSanciones(j) = 4) THEN borrarPokemones(pokemones(pGo), claves(pokedex(j))) ELSE pokemones(pGo) FI} FI}
     \tadAxioma{borrarPokemones(p, ids}{\IF vacio?(ids) THEN p ELSE borrarPokemones(borrar(dameUno(ids), p), sinUno(ids)) FI}
-	\tadAxioma{posicionPokemon(informarPosicion(j, c, pGo))}{}
-    
+
+    \tadAxioma{actualizarContadores(cj, c, pGo)}{\IF $\emptyset$?(cj) THEN $\emptyset$ ELSE {\IF posicionJugador(dameUno(cj),pGo) == c THEN Ag(actualizarEspera(true,dameUno(cj)), actualizarContadores(sinUno(cj),c,pGo)) ELSE {\IF esperaParaAtrapar(dameUno(cj)) == 9 THEN unoAtrapa(posicionJugadores(posicionJugador(dameUno(cj),pGo),pGo) $\cup$ actualizarContadores(cj - posicionJugadores(posicionJugador(dameUno(cj),pGo),c,pGo) ELSE Ag(actualizarEspera(false,dameUno(cj)), actualizarContadores(sinUno(cj),c,pGo)) FI} FI} FI}
+
 \end{tad}

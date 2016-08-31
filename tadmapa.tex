@@ -30,13 +30,13 @@
     	
     \tadOtrasOperaciones
     \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
-    \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs) $\in$ posiciones(m)}{}
+    \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs) $\subseteq$ posiciones(m)}{}
     
     \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
 	\tadAxioma{posiciones(crear())}{$\emptyset$}
 	\tadAxioma{posiciones(agCoordenada(c, cs, m))}{Ag(c, posiciones(m))}
 	\tadAxioma{existeCamino(c1, c2, crear())}{false}
-	\tadAxioma{existeCamino(c1, c2, agCoordenada(c, cs, m))}{c1 == c $\land$ c2 $\in$ cs}
+	\tadAxioma{existeCamino(c1, c2, agCoordenada(c, cs, m))}{\IF c1 $\notin$ posiciones(m) THEN {\IF c2 $\notin$ posiciones(m) THEN false ELSE {\IF c1 == c2 THEN {\IF c2 $\in$ cs THEN true ELSE existenCaminos(c2,cs,m) FI} ELSE false FI} FI} ELSE {\IF c2 $\in$ posiciones(m) THEN {\IF c2 == c THEN {\IF c1 $\in$ cs THEN true ELSE existenCaminos(c1,cs,m) FI} ELSE false FI} ELSE existeCamino(c1,c2,m) FI} FI}
 	\tadAxioma{existenCaminos(c, cs, m)}{\IF vacio?(cs) THEN false ELSE existeCamino(c, dameUno(cs), m) $\lor$ existenCaminos(c, sinUno(cs), m) FI}
 
 
