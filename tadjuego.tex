@@ -37,7 +37,7 @@
     \tadOperacion{esPosicionValidaEnJuego}{Coordenada/c, Juego/j}{bool}{}
     \tadOperacion{puedeMoverse}{Jugador/j, Juego/pGo}{bool}{}
     \tadOperacion{actualizarContadores}{conj(Jugador)/cj, Coordenada/c, Juego pGo}{conj(Jugador)}{}
-
+    \tadOperacion{borrarPokemones}{Pokemones/p, conj(Nat)/ids}{Pokemones}{}
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
 
@@ -65,7 +65,8 @@
 	%%% ver otra op posicionInvalida, puede ser esPosicionValida declarada arriba
 	\tadAxioma{jugadores(informarPosicion(j, c, pGo))}{\IF nula?(c) THEN jugadores(pGo) ELSE actualizarContadores({\IF posicionInvalida(posicionJugador(j, pGo), c, pGo) THEN {\IF cantidadSanciones(j) = 4 THEN jugadores(pGo) - {j} ELSE Ag(sancionar(j), jugadores(pGo) - {j}) FI} ELSE jugadores(pGo) FI}, c, pGo) FI}
 	\tadAxioma{posicionJugador(j1, informarPosicion(j2, c, pGo))}{\IF j1 $\neq$ j2 THEN posicionJugador(j1, pGo) ELSE {\IF nula?(c) THEN fueraDelMapa ELSE {\IF nula?(posicionJugador(j2, pGo)) THEN c ELSE {\IF posicionInvalida(c) THEN {\IF cantidadDeSanciones(j1) = 4 THEN fueraDelMapa ELSE c FI} ELSE c FI} FI} FI} FI}
-	\tadAxioma{pokemones(informarPosicion(j, c, pGo))}{}
+	\tadAxioma{pokemones(informarPosicion(j, c, pGo))}{\IF nula?(c) THEN pokemones(pGo) ELSE {\IF (posicionInvalida(posicionJugador(j, pGo), c, pGo) $\land$ cantidadSanciones(j) = 4) THEN borrarPokemones(pokemones(pGo), claves(pokedex(j))) FI} ELSE pokemones(pGo) FI}
+    \tadAxioma{borrarPokemones(p, ids}{\IF vacio?(ids) THEN p ELSE borrarPokemones(borrar(dameUno(ids), p), sinUno(ids)) FI}
 	\tadAxioma{posicionPokemon(informarPosicion(j, c, pGo))}{}
     
 \end{tad}
