@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%% Juego
+\section{TAD \tadNombre{Coordenada}}
+\begin{tad}{\tadNombre{Coordenada}}
+	\tadGeneros{coordenada}
+	
+	%%% Observadores %%%
+	\tadObservadores
+	\tadAlinearFunciones{nula?~}{Coordenada/c, Bool}
+	
+    \tadOperacion{x}{Coordenada/c}{Nat}{$\neg$ nula?(c)}
+    \tadOperacion{y}{Coordenada/c}{Nat}{$\neg$ nula?(c)}
+    \tadOperacion{nula?}{Coordenada/c}{Bool}{}
+
+	%%% Generadores %%%
+	\tadGeneradores
+	\tadAlinearFunciones{fueraDelMapa~}{Nat/x, Nat/y, Coordenada}
+	
+    \tadOperacion{fueraDelMapa}{}{Coordenada}{}
+    \tadOperacion{nueva}{Nat/x, Nat/y}{Coordenada}{}
+
+	%%% Axiomas %%%
+	\tadAxiomas[\paratodo{Nat}{x1,y1}]
+
+	%%% nula?
+	\tadAxioma{nula?(fueraDelMapa())}{true}
+	\tadAxioma{nula?(nueva(x1, y1))}{false}
+
+	%%% x
+	\tadAxioma{x(nueva(x1, y1))}{x1}
+	
+	%%% y
+	\tadAxioma{y(nueva(x1, y1))}{y1}    
+\end{tad}
