@@ -1,45 +1,47 @@
 %%%%%%%%%%%%%%%%%%%% Juego
 \section{TAD \tadNombre{Juego}}
-\begin{tad}{\tadNombre{PokeMongo}}
+\begin{tad}{\tadNombre{Juego}}
 	\tadGeneros{juego}
 	
 	%%% Observadores %%%
 	\tadObservadores
-	\tadAlinearFunciones{posicionJugador~}{Jugador/j, Juego/pGo, Coordenada}
+	\tadAlinearFunciones{cuantoLlevaEsperando~}{Jugador/j, Juego/pGo, Coordenada}
 	
     \tadOperacion{mapa}{Juego}{Mapa}{}
-    \tadOperacion{jugadores}{Juego}{conj(Jugador)}{}
+    \tadOperacion{jugadores}{Juego}{Jugadores}{}
     \tadOperacion{posicionJugador}{Jugador/j, Juego/pGo}{Coordenada}
-    	{j $\in$ jugadores(pGo)}
+    	{def?(j, jugadores(pGo)) $\yluego$ obtener(j, jugadores(pGo))}
     \tadOperacion{pokemones}{Juego}{Pokemones}{}
-    \tadOperacion{posicionPokemon}{Pokemon/p, Juego/j}{Coordenada}
-    		{def?($\Pi_1$(p),pokemones(j))}
+    \tadOperacion{posicionPokemon}{Pokemon/p, Juego/pGo}{Coordenada}
+    		{def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esSalvaje?(p, pGo)}
+    \tadOperacion{cuantoLlevaEsperando}{Pokemon/p, Juego/pGo}{Nat}{def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esSalvaje?(p, pGo)}
+    \tadOperacion{pokemonesAtrapados}{Jugador/j, Juego/pGo}{Pokemones}{def?(j, jugadores(pGo))}
+    \tadOperacion{cantidadDeSanciones}{Jugador/j, Juego/pGo}{Nat}{def?(j, jugadores(pGo))}
 
 	%%% Generadores %%%
 	\tadGeneradores
-	\tadAlinearFunciones{informarPosicion~}{Jugador/j, Coordenada/c, Juego/pGo, Juego}
+	\tadAlinearFunciones{moverJugador~}{Jugador/j, Coordenada/c, Juego/pGo, Juego}
 	
     \tadOperacion{nuevoJuego}{Mapa}{Juego}{}{}
     \tadOperacion{agJugador}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
-    	{esPosicionValidaJugador(c, pGo) $\yluego$ id(j) $\notin$ jugadores(pGo)}
-    \tadOperacion{agPokemon}{Nat/n, Tipo/t, Coordenada/c, Juego/pGo}{Juego}
-    	{n $\notin$ pokemones(j) $\yluego$ esPosicionValidaPokemon(c, pGo)}
-    \tadOperacion{informarPosicion}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
-    	{puedeMoverse(j, pGo) $\yluego$ esPosicionValidaEnJuego(c, pGo)}
-    \tadOperacion{sumarEspera}{conj(jugador)/cj, Coordenada/c, Juego/pGo}{Juego}{}
+    	{$\neg$ def?(j, jugadores(pGo)) $\yluego$ esPosicionValidaMapa(c, pGo) }
+    \tadOperacion{agPokemon}{Pokemon/p, Coordenada/c, Juego/pGo}{Juego}
+    	{$\neg$ def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esPosicionValidaPokemon(c, pGo)}
+    \tadOperacion{moverJugador}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
+    	{def?(j, jugadores(pGo)) $\yluego$ esPosicionValidaMapa(c, pGo)}
+    \tadOperacion{desconectar}{Jugador/j, Juego/pGo}{Juego}{def?(j, jugadores(pGo))}
+    %% moverJugador automaticamente se conecta
     	
     %%% Otras Operaciones %%%
     \tadOtrasOperaciones
     \tadAlinearFunciones{esPosicionValidaPokemon~}{Pokemon/p, Jugador/j, Juego/pGo, Juego}
-    \tadOperacion{atraparPokemon}{Pokemon/p, Jugador/j, Juego/pGo}{Juego}{}
-    \tadOperacion{esPosicionValidaJugador}{Coordenada/c, Juego/j}{bool}{}
+    \tadOperacion{esPosicionValidaMapa}{Coordenada/c, Juego/j}{bool}{}
     \tadOperacion{esPosicionValidaPokemon}{Coordenada/c, Juego/j}{bool}{}
-    \tadOperacion{esPosicionValidaEnJuego}{Coordenada/c, Juego/j}{bool}{}
-    \tadOperacion{puedeMoverse}{Jugador/j, Juego/pGo}{bool}{}
-    \tadOperacion{actualizarContadores}{conj(Jugador)/cj, Coordenada/c, Juego pGo}{conj(Jugador)}{}
-    \tadOperacion{borrarPokemones}{Pokemones/p, conj(Nat)/ids}{Pokemones}{}
-	\tadOperacion{unoAtrapa}{conj(Jugador)/js, Juego/pGo}{conj(Jugador)}{js $\subseteq$ jugadores(pGo)}
-	\tadOperacion{posicionJugadores}{Coordenada/c, Juegao/pGo}{conj(Jugador)}{c $\in$ posiciones(mapa(pGo))}    
+%    \tadOperacion{actualizarContadores}{conj(Jugador)/cj, Coordenada/c, Juego pGo}{conj(Jugador)}{}
+%    \tadOperacion{borrarPokemones}{Pokemones/p, conj(Nat)/ids}{Pokemones}{}
+%	\tadOperacion{unoAtrapa}{conj(Jugador)/js, Juego/pGo}{conj(Jugador)}{js $\subseteq$ jugadores(pGo)}
+%	\tadOperacion{posicionJugadores}{Coordenada/c, Juegao/pGo}{conj(Jugador)}{c $\in$ posiciones(mapa(pGo))}  
+	\tadOperacion{esSalvaje?}{Pokemon/p, Juego/pGo}{Bool}{def?($\Pi_1$(p),pokemones(pGo))}
     
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
@@ -63,15 +65,17 @@
 	\tadAxioma{pokemones(agPokemon(n, t, c, pGo))}{definir(n, t, pokemones(pGo))}
 	\tadAxioma{posicionPokemon(p, agPokemon(n, t, c, pGo))}{\IF $\Pi_1$(p) = n THEN c ELSE posicionPokemon(p, pGo) FI}
 	
-	%%% informarPosicion
-	\tadAxioma{mapa(informarPosicion(j, c, pGo))}{mapa(pGo)}
+	%%% moverJugador
+	\tadAxioma{mapa(moverJugador(j, c, pGo))}{mapa(pGo)}
 	%%% ver otra op posicionInvalida, puede ser esPosicionValida declarada arriba
-	\tadAxioma{jugadores(informarPosicion(j, c, pGo))}{\IF nula?(c) THEN jugadores(pGo) ELSE actualizarContadores({\IF posicionInvalida(posicionJugador(j, pGo), c, pGo) THEN {\IF cantidadSanciones(j) = 4 THEN jugadores(pGo) - {j} ELSE Ag(sancionar(j), jugadores(pGo) - {j}) FI} ELSE jugadores(pGo) FI}, c, pGo) FI}
-	\tadAxioma{posicionJugador(j1, informarPosicion(j2, c, pGo))}{\IF j1 $\neq$ j2 THEN posicionJugador(j1, pGo) ELSE {\IF nula?(c) THEN fueraDelMapa ELSE {\IF nula?(posicionJugador(j2, pGo)) THEN c ELSE {\IF posicionInvalida(c) THEN {\IF cantidadDeSanciones(j1) = 4 THEN fueraDelMapa ELSE c FI} ELSE c FI} FI} FI} FI}
-	\tadAxioma{pokemones(informarPosicion(j, c, pGo))}{\IF nula?(c) THEN pokemones(pGo) ELSE {\IF (posicionInvalida(posicionJugador(j, pGo), c, pGo) $\land$ cantidadSanciones(j) = 4) THEN borrarPokemones(pokemones(pGo), claves(pokedex(j))) ELSE pokemones(pGo) FI} FI}
-    \tadAxioma{borrarPokemones(p, ids}{\IF vacio?(ids) THEN p ELSE borrarPokemones(borrar(dameUno(ids), p), sinUno(ids)) FI}
+%	\tadAxioma{jugadores(moverJugador(j, c, pGo))}{\IF nula?(c) THEN jugadores(pGo) ELSE actualizarContadores({\IF posicionInvalida(posicionJugador(j, pGo), c, pGo) THEN {\IF cantidadSanciones(j) = 4 THEN jugadores(pGo) - {j} ELSE Ag(sancionar(j), jugadores(pGo) - {j}) FI} ELSE jugadores(pGo) FI}, c, pGo) FI}
+%	\tadAxioma{posicionJugador(j1, moverJugador(j2, c, pGo))}{\IF j1 $\neq$ j2 THEN posicionJugador(j1, pGo) ELSE {\IF nula?(c) THEN fueraDelMapa ELSE {\IF nula?(posicionJugador(j2, pGo)) THEN c ELSE {\IF posicionInvalida(c) THEN {\IF cantidadDeSanciones(j1) = 4 THEN fueraDelMapa ELSE c FI} ELSE c FI} FI} FI} FI}
+%	\tadAxioma{pokemones(moverJugador(j, c, pGo))}{\IF nula?(c) THEN pokemones(pGo) ELSE {\IF (posicionInvalida(posicionJugador(j, pGo), c, pGo) $\land$ cantidadSanciones(j) = 4) THEN borrarPokemones(pokemones(pGo), claves(pokedex(j))) ELSE pokemones(pGo) FI} FI}
+ %   \tadAxioma{borrarPokemones(p, ids}{\IF vacio?(ids) THEN p ELSE borrarPokemones(borrar(dameUno(ids), p), sinUno(ids)) FI}
     
-    \tadAxioma{posicionPokemon(p, informarPosicion(j, c, pGo))}{\IF nula?(c) THEN posicionPokemon(p, pGo) ELSE {\IF j $\in$ posicionJugadores(posicionPokemon(p, pGo), pGo) THEN posicionPokemon(p, pGo) ELSE {\IF esperaParaAtrapar(dameUno(posicionJugadores(posicionPokemon(p, pGo), pGo))) = 9 THEN fueraDelMapa ELSE posicionPokemon(p, pGo) FI} FI} FI}
+%    \tadAxioma{posicionPokemon(p, moverJugador(j, c, pGo))}{\IF nula?(c) THEN posicionPokemon(p, pGo) ELSE {\IF j $\in$ posicionJugadores(posicionPokemon(p, pGo), pGo) THEN posicionPokemon(p, pGo) ELSE {\IF esperaParaAtrapar(dameUno(posicionJugadores(posicionPokemon(p, pGo), pGo))) = 9 THEN fueraDelMapa ELSE posicionPokemon(p, pGo) FI} FI} FI}
+
+	\tadAxioma{pokemonesAtrapados(j1, moverJugador(j2, c, pGo))}{\IF j1 = j2 THEN pokemonesAtrapados(j1, pGo) ELSE {\IF estaEnRangoDeAtrapar(j1, pGo) THEN {\IF estanEnMismoRango(posicionJugador(j1, pGo), c, pGo) THEN pokemonesAtrapados(j1, pGo) ELSE {\IF llevaEsperando(pokemonEnRango(rangoDeCaza(j1, pGo), pGo), pGo) = 9 THEN {\IF j1 = dameUno(jugadoresPorAtrapar(pokemonEnRango(rangoDeCaza(j1, pGo), pGo))) THEN definir($\Pi_1$(pokemonEnRango(rangoDeCaza(j1, pGo), pGo)), $\Pi_2$(pokemonEnRango(rangoDeCaza(j1, pGo)), pGo), pokemonesAtrapados(j1, pGo)) ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI}
 
     \tadAxioma{actualizarContadores(cj, c, pGo)}{\IF $\emptyset$?(cj) THEN $\emptyset$ ELSE {\IF posicionJugador(dameUno(cj),pGo) == c THEN Ag(actualizarEspera(true,dameUno(cj)), actualizarContadores(sinUno(cj),c,pGo)) ELSE {\IF esperaParaAtrapar(dameUno(cj)) == 9 THEN unoAtrapa(posicionJugadores(posicionJugador(dameUno(cj),pGo),pGo) $\cup$ actualizarContadores(cj - posicionJugadores(posicionJugador(dameUno(cj),pGo),c,pGo) ELSE Ag(actualizarEspera(false,dameUno(cj)), actualizarContadores(sinUno(cj),c,pGo)) FI} FI} FI}
 
