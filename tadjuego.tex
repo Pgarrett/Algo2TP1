@@ -58,7 +58,8 @@
 	\tadAxioma{posicionJugador(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN c ELSE posicionJugador(j1, pGo) FI}
 	\tadAxioma{pokemones(agJugador(j, c, pGo))}{pokemones(pGo)}
 	\tadAxioma{posicionPokemon(p, agJugador(j, c, pGo))}{posicionPokemon(p, pGo)}
-
+  \tadAxioma{cuantoLlevaEsperando(p,agJugador(j, c, pGo))}{\IF estanEnElMismoRango(posicionPokemon(p,pGo), c, mapa(pGo)) THEN 0 ELSE cuantoLLevaEsperando(p, pGo) + 1 FI} 
+  
 	%%% agPokemon
 	\tadAxioma{mapa(agPokemon(n, t, c, pGo))}{mapa(pGo)}
 	\tadAxioma{jugadores(agPokemon(n, t, c, pGo))}{jugadores(pGo)}
