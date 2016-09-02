@@ -35,9 +35,9 @@
     	
     %%% Otras Operaciones %%%
     \tadOtrasOperaciones
-    \tadAlinearFunciones{esPosicionValidaPokemon~}{Pokemon/p, Jugador/j, Juego/pGo, Juego}
-    \tadOperacion{esPosicionValidaMapa}{Coordenada/c, Juego/j}{bool}{}
-    \tadOperacion{esPosicionValidaPokemon}{Coordenada/c, Juego/j}{bool}{}
+    \tadAlinearFunciones{estaEnElRangoDeOtroPokemon~}{Pokemon/p, Jugador/j, Juego/pGo, Juego}
+    \tadOperacion{esPosicionValidaMapa}{Coordenada/c, Juego/pGo}{bool}{}
+    \tadOperacion{esPosicionValidaPokemon}{Coordenada/c, Juego/pGo}{bool}{}
 %    \tadOperacion{actualizarContadores}{conj(Jugador)/cj, Coordenada/c, Juego pGo}{conj(Jugador)}{}
 %    \tadOperacion{borrarPokemones}{Pokemones/p, conj(Nat)/ids}{Pokemones}{}
 %	\tadOperacion{unoAtrapa}{conj(Jugador)/js, Juego/pGo}{conj(Jugador)}{js $\subseteq$ jugadores(pGo)}
@@ -46,6 +46,11 @@
     \tadOperacion{estaEnRangoDeAtrapar}{Jugador/j, Juego/pGo}{Bool}{def?(j, jugadores(pGo))} %te dice si el jugador esta dentro del rango de algun pokemon
 	\tadOperacion{pokemonDelRango}{Jugador/j, Juego/pGo}{Pokemon}{def?(j, jugadores(pGo)) $\yluego$ estaEnRangoDeAtrapar(j,pGo)} %FaltanRestricciones si el j esta en rango de atrapar, te devuelve el pokemon en cuestión.    
     \tadOperacion{jugadoresDelRango}{Coordenada/c, Juego/pGo}{Conj(Jugador)}{esPosicionValidaMapa(c, pGo)}
+    \tadOperacion{estaEnElRangoDeOtroPokemon}{Coordenada/c1, Coordenada/c2}{Bool}{}
+    \tadOperacion{restaAbsoluta}{Nat/n1, Nat/n2}{Nat}{}
+    
+    
+    
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
 	\tadAlinearAxiomas{pokemonesAtrapados(j1, moverJugador(j2, c, pGo))}
@@ -122,6 +127,13 @@
 
 %    \tadAxioma{actualizarContadores(cj, c, pGo)}{\IF $\emptyset$?(cj) THEN $\emptyset$ ELSE {\IF posicionJugador(dameUno(cj),pGo) == c THEN Ag(actualizarEspera(true,dameUno(cj)), actualizarContadores(sinUno(cj),c,pGo)) ELSE {\IF esperaParaAtrapar(dameUno(cj)) == 9 THEN unoAtrapa(posicionJugadores(posicionJugador(dameUno(cj),pGo),pGo) $\cup$ actualizarContadores(cj - posicionJugadores(posicionJugador(dameUno(cj),pGo),c,pGo) ELSE Ag(actualizarEspera(false,dameUno(cj)), actualizarContadores(sinUno(cj),c,pGo)) FI} FI} FI}
 %
+
+	%%% otrasOperaciones
+	\tadAxioma{esPosicionValidaMapa(c, pGo)}{c $\in$ posiciones(mapa(pGo))}
+	\tadAxioma{esPosicionValidaPokemon(c, pGo)}{esPosicionValidaMapa(c, pGo) $\yluego$ (\paratodo p $\leftarrow$ pokemones(pGo), esSalvaje?(p, pGo)) $\neg$ estaEnElRangoDeOtroPokemon(c, posicionPokemon(p, pGo)))}
+	\tadAxioma{estaEnElRangoDeOtroPokemon(c1, c2)}{(restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) * (restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) + (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2))) * (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2)))) $\leq$ 5 * 5}
+	
+	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
 
 
 
