@@ -60,6 +60,7 @@
 	\tadAxioma{posicionPokemon(p, agJugador(j, c, pGo))}{posicionPokemon(p, pGo)}
   \tadAxioma{cuantoLlevaEsperando(p,agJugador(j, c, pGo))}{\IF estanEnElMismoRango(posicionPokemon(p,pGo), c, mapa(pGo)) THEN 0 ELSE cuantoLLevaEsperando(p, pGo) + 1 FI} 
   \tadAxioma{pokemonesAtrapados(j1, agJugador(j2, c, pGo))}{\IF j1 == j2 THEN vacio ELSE {\IF estanEnMismoRango(posicionJugador(j1, pGo), c, pGo) THEN pokemonesAtrapados(j1, pGo) ELSE {\IF cuantoLlevaEsperando(pokemonEnRango(rangoDeCaza(j1, pGo), pGo), pGo) = 9 THEN {\IF j1 = dameUno(jugadoresPorAtrapar(pokemonEnRango(rangoDeCaza(j1, pGo), pGo))) THEN definir($\Pi_1$(pokemonEnRango(rangoDeCaza(j1, pGo), pGo)), $\Pi_2$(pokemonEnRango(rangoDeCaza(j1, pGo)), pGo), pokemonesAtrapados(j1, pGo)) ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI} FI}
+  \tadAxioma{cantidadDeSanciones(j1, agJugador(j2, c, pGo))}{\IF j1 == j2 THEN 0 ELSE cantidadDeSanciones(j1) FI}
   
 	%%% agPokemon
 	\tadAxioma{mapa(agPokemon(n, t, c, pGo))}{mapa(pGo)}
