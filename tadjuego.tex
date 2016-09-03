@@ -13,7 +13,7 @@
     	{def?(j, jugadores(pGo)) $\yluego$ estaConectado(j,pGo)}
     \tadOperacion{pokemones}{Juego}{Pokemones}{}
     \tadOperacion{posicionPokemon}{Pokemon/p, Juego/pGo}{Coordenada}
-    		{def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esSalvaje?(p, pGo)}
+    		{def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esSalvaje?(p, claves(pGo)}
     \tadOperacion{cuantoLlevaEsperando}{Pokemon/p, Juego/pGo}{Nat}{def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esSalvaje?(p, pGo)}
     \tadOperacion{pokemonesAtrapados}{Jugador/j, Juego/pGo}{Pokemones}{def?(j, jugadores(pGo))}
     \tadOperacion{cantidadDeSanciones}{Jugador/j, Juego/pGo}{Nat}{def?(j, jugadores(pGo))}
@@ -48,9 +48,10 @@
     \tadOperacion{jugadoresDelRango}{Coordenada/c, Juego/pGo}{Conj(Jugador)}{esPosicionValidaMapa(c, pGo)}
     \tadOperacion{estaEnElRangoDeOtroPokemon}{Coordenada/c1, Coordenada/c2, Mapa/m}{Bool}{}
     \tadOperacion{restaAbsoluta}{Nat/n1, Nat/n2}{Nat}{}
-    \tadOperacion{rareza}{Tipo/t, Juego/pGo}{Nat}{estaDefTipo(t,pGo)}        
-    \tadOperacion{cantidadPokemonesTipo}{Tipo/t, Conj(Nat)/ids, Juego/pGo}{Nat}{estaDefTipo(t,pGo)}
+    \tadOperacion{rareza}{Tipo/t, Juego/pGo}{Nat}{estaDefTipo(t,claves(pokemones(pGo))),pGo}        
+    \tadOperacion{cantidadPokemonesTipo}{Tipo/t, Conj(Nat)/ids, Juego/pGo}{Nat}{estaDefTipo(t,claves(pokemones(pGo))),pGo}
     \tadOperacion{dividir}{Nat/n, Nat/d}{Nat}{$\neg$(d = 0?)}
+    \tadOperacion{estaDefTipo}{Tipo/t, conj(nat)/claves, Juego/pGo}{bool}{}
     
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
@@ -139,6 +140,17 @@
   \tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemones(t,(claves(pokemones(pGo)), pGo), \#claves(pokemones(pGo)))) * 100}
   \tadAxioma{cantidadPokemonesTipo(t, ids, pGo)}{\IF vacio?(ids) THEN 0 ELSE {\IF obtener(dameUno(ids)) == t THEN cantidadPokemonesTipo(t, sinUno(ids), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ids), pGo) FI} FI}
   \tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
+  
+  \tadAxioma{sacarPokemones(cp, pGo)}{{\IF vacio?(cp) THEN pokemones(pGo) ELSE sacarPokemonesAux(cp,pokemones(pGo)) FI}} 
+  
+    \tadAxioma{sacarPokemonesAux(cp, pokes)}{{\IF vacio?(cp) THEN pokes ELSE sacarPokemonesAux(sinUno(cp),borrar(dameUno(cp,pokes))) FI}}
+    
+      \tadAxioma{estaDefTipo(t, pokes, pGo)}{{{\IF vacio?(pokes) THEN false ELSE {\IF t =obtener(dameUno(pokes),pokemones(pGo)) THEN true ELSE estaDefTipo(t,sinUno(pokes),pGo) FI} FI}} }
+  
+  \tadAxioma{esSalvaje(id, pGo)}{esSalvajeAux(id, claves(jugadores(pGo)), pGo} 
+  
+    \tadAxioma{esSalvajeAux(id,jugadores, pGo)}{{{\IF vacio?(jugadores) THEN false ELSE {\IF definido?(id,pokemonesAtrapados(dameUno(jugadores),pGo)) THEN true ELSE esSalvajeAux(id,sinUno(jugadores),pGo) FI} FI}} }
+    
     
 
 \end{tad}

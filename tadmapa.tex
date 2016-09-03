@@ -32,7 +32,13 @@
     	
     \tadOtrasOperaciones
     \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
+    \tadAlinearFunciones{movimientoInvalido~}{Coordenada/c1, Coordenada/c2, Mapa/m, bool}
+    
     \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs) $\subseteq$ posiciones(m)}{}
+    \tadOperacion{movimientoInvalido}{Coordenada/c1, Coordenada/c2, Mapa/m}{bool}{{c1,c2} $\subseteq$ posiciones(m)}{}
+    \tadOperacion{distancia}{Coordenada/c1, Coordenada/c2}{Nat}{}{}
+    \tadOperacion{estaEnElMismoRango}{Coordenada/c1, Coordenada/c2}{bool}{}{}
+    \tadOperacion{restaAbsoluta}{Coordenada/c1, Coordenada/c2}{Nat}{}{}
     
     \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
 	\tadAxioma{posiciones(crear())}{$\emptyset$}
@@ -44,6 +50,10 @@
 	
 	\tadAxioma{existeCamino(c1, c2,m}{\IF c2 $\in$ conexionesDirectas(c1,mapa) $\lor$ c1 $\in$ conexionesDirectas(c2,mapa) THEN true ELSE existenCaminos(conexionesDirectas(c1,m),c2,m) $\lor$ existenCaminos(conexionesDirectas(c2,m),c1,m) FI}
 	\tadAxioma{existenCaminos(cs, c, m)}{\IF vacio?(cs) THEN false ELSE existeCamino( dameUno(cs),c, m) $\lor$ existenCaminos( sinUno(cs),c, m) FI}
+	\tadAxioma{movimientoInvalido(c1, c2, m)}{distancia(c1,c2) $\geq$ 10 $\lor$ !existenCaminos(c1,c2,m) }
+	\tadAxioma{distancia(c1, c2)}{(restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) * (restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) + (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2))) * (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2)))) }
+	\tadAxioma{estaEnElMismoRango(c1, c2)}{ distancia(c1,c2) $\leq$ 5 * 5}
+	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
 
 
     
