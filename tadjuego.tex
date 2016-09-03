@@ -2,6 +2,30 @@
 \section{TAD \tadNombre{Juego}}
 \begin{tad}{\tadNombre{Juego}}
 	\tadGeneros{juego}
+	\tadExporta{juego, 
+	generadores, 
+	observadores, 
+	rareza}
+	\tadUsa{\tadNombre{Nat},
+	\tadNombre{Bool},
+	\tadNombre{Jugador},
+	\tadNombre{Jugadores},
+	\tadNombre{Estado},
+	\tadNombre{Pokemon},
+	\tadNombre{Pokemones},
+	\tadNombre{Tipo},
+	\tadNombre{Coordenada},
+	\tadNombre{Conjunto(Coordenada)}
+	\tadNombre{Conjunto(Jugador)}}
+	\tadIgualdadObservacional{pGo}{pGo'}{juego}
+                         {(mapa(pGo) $\igobs$ mapa(pGo')) $\yluego$  \\
+						 (jugadores(pGo) $\igobs$ jugadores(pGo')) $\yluego$  \\
+     					  pokemones(pGo) $\igobs$ pokemones(pGo') $\yluego$ \\
+                         ($\forall$ j: Jugador) def?(j,jugadores(j)) (posicionJugador(j,pGo) $\igobs$ posicionJugador(j,pGo') $\wedge$ \\ cantidadDeSanciones(j,pGo) $\igobs$ cantidadDeSanciones(j,pGo')) $\yluego$ \\
+						 ($\forall$ j: Jugador) def?(j,jugadores(j)) pokemonesAtrapados(j,pGo) $\igobs$ pokemonesAtrapados(j,pGo') $\yluego$ \\
+						 ($\forall$ p: Pokemon) def?($\Pi_1$(p),pokemones(pGo)) (posicionPokemon(p,pGo) $\igobs$ posicionPokemon(p,pGo')                          $\wedge$ \\ cuantoLlevaEsperando(p,pGo) $\igobs$ cuantoLlevaEsperando(p,pGo'))
+                         }
+	
 	
 	%%% Observadores %%%
 	\tadObservadores
@@ -42,7 +66,8 @@
 %    \tadOperacion{borrarPokemones}{Pokemones/p, conj(Nat)/ids}{Pokemones}{}
 %	\tadOperacion{unoAtrapa}{conj(Jugador)/js, Juego/pGo}{conj(Jugador)}{js $\subseteq$ jugadores(pGo)}
 %	\tadOperacion{posicionJugadores}{Coordenada/c, Juegao/pGo}{conj(Jugador)}{c $\in$ posiciones(mapa(pGo))}  
-	\tadOperacion{esSalvaje?}{Pokemon/p, Juego/pGo}{Bool}{def?($\Pi_1$(p),pokemones(pGo))}    
+	\tadOperacion{esSalvaje?}{Pokemon/p, Juego/pGo}{Bool}{def?($\Pi_1$(p),pokemones(pGo))}
+	\tadOperacion{esSalvajeAux}{Nat/id, Conj(Nat)/js}{Bool}{def?(id,pokemones(pGo)) $\wedge$ js $\subseteq$ claves(jugadores(pGo))}        
     \tadOperacion{estaEnRangoDeAtrapar}{Jugador/j, Juego/pGo}{Bool}{def?(j, jugadores(pGo))} %te dice si el jugador esta dentro del rango de algun pokemon
 	\tadOperacion{pokemonDelRango}{Jugador/j, Juego/pGo}{Pokemon}{def?(j, jugadores(pGo)) $\yluego$ estaEnRangoDeAtrapar(j,pGo)} %FaltanRestricciones si el j esta en rango de atrapar, te devuelve el pokemon en cuestión.    
     \tadOperacion{jugadoresDelRango}{Coordenada/c, Juego/pGo}{Conj(Jugador)}{esPosicionValidaMapa(c, pGo)}
@@ -147,9 +172,9 @@
     
       \tadAxioma{estaDefTipo(t, pokes, pGo)}{{{\IF vacio?(pokes) THEN false ELSE {\IF t =obtener(dameUno(pokes),pokemones(pGo)) THEN true ELSE estaDefTipo(t,sinUno(pokes),pGo) FI} FI}} }
   
-  \tadAxioma{esSalvaje(id, pGo)}{esSalvajeAux(id, claves(jugadores(pGo)), pGo} 
+  \tadAxioma{esSalvaje(p, pGo)}{esSalvajeAux($\Pi_1$(p), claves(jugadores(pGo)), pGo} 
   
-    \tadAxioma{esSalvajeAux(id,jugadores, pGo)}{{{\IF vacio?(jugadores) THEN false ELSE {\IF definido?(id,pokemonesAtrapados(dameUno(jugadores),pGo)) THEN true ELSE esSalvajeAux(id,sinUno(jugadores),pGo) FI} FI}} }
+    \tadAxioma{esSalvajeAux(id,js, pGo)}{{{\IF vacio?(js) THEN false ELSE {\IF definido?(id,pokemonesAtrapados(dameUno(js),pGo)) THEN true ELSE esSalvajeAux(id,sinUno(js),pGo) FI} FI}} }
     
     
 

@@ -2,18 +2,20 @@
 \section{TAD \tadNombre{Mapa}}
 \begin{tad}{\tadNombre{Mapa}}
 	\tadGeneros{mapa}
+	\tadExporta{mapa, 
+	generadores, 
+	observadores, 
+	movimientoInvalido, 
+	estanEnElMismoRango}
+	\tadUsa{\tadNombre{Nat},
+	\tadNombre{Bool},
+	\tadNombre{Coordenada},
+	\tadNombre{Conjunto(Coordenada)}}
 	\tadIgualdadObservacional{m}{m'}{Mapa}
                          {(posiciones(m) $\igobs$ posiciones(m')) $\land$ \\ 
                          ($\forall$ c1: Coordenada) \\
                          (conexionesDirectas(c1,m) $\igobs$ conexionesDirectas(c1,m')) }
 
-		\tadExporta{Mapa,
-            generadores,
-            observadores}
-		\tadUsa{\tadNombre{Bool},
-        	\tadNombre{Coordenada},
-        	\tadNombre{Conj()}}
-	
 	\tadObservadores
 	\tadAlinearFunciones{conexionesDirectas~}{Coordenada/c, Mapa/m, Conj(Coordenada)}
 	
@@ -28,16 +30,17 @@
     \tadOperacion{agCoordenada}{Coordenada/c, Mapa/m}{Mapa}
     	{c $\notin$ posiciones(m)}
     \tadOperacion{conectarCoordenadas}{Coordenada/c1, Coordenada/c2, Mapa/m}{Mapa}
-    	{c1 $\neq$ c2 $\yluego$ c1,c2 $\in$ posiciones(m)}
-    	
+    	{c1 $\neq$ c2 $\wedge$ c1,c2 $\in$ posiciones(m)}
+
     \tadOtrasOperaciones
     \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
     \tadAlinearFunciones{movimientoInvalido~}{Coordenada/c1, Coordenada/c2, Mapa/m, bool}
-    
+
+	\tadOperacion{existeCamino}{Coordenada/c1, Coordenada/c2, Mapa/m}{bool}{{c1,c2} $\in$ posiciones(m)}{}    
     \tadOperacion{existenCaminos}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m}{bool}{Ag(c1,cs) $\subseteq$ posiciones(m)}{}
-    \tadOperacion{movimientoInvalido}{Coordenada/c1, Coordenada/c2, Mapa/m}{bool}{{c1,c2} $\subseteq$ posiciones(m)}{}
+    \tadOperacion{movimientoInvalido}{Coordenada/c1, Coordenada/c2, Mapa/m}{bool}{{c1,c2} $\in$ posiciones(m)}{}
     \tadOperacion{distancia}{Coordenada/c1, Coordenada/c2}{Nat}{}{}
-    \tadOperacion{estaEnElMismoRango}{Coordenada/c1, Coordenada/c2}{bool}{}{}
+    \tadOperacion{estanEnElMismoRango}{Coordenada/c1, Coordenada/c2}{bool}{}{}
     \tadOperacion{restaAbsoluta}{Coordenada/c1, Coordenada/c2}{Nat}{}{}
     
     \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
@@ -48,11 +51,11 @@
 	\tadAxioma{conexionesDirectas(c,agCoordenada(c1, m))}{conexionesDirectas(c,m)}
 	\tadAxioma{conexionesDirectas(c,conectarCoordenadas(c1, c2, m))}{{\IF c=c1 THEN Ag(c2,conexionesDirectas(c,m)) ELSE {\IF c=c2 THEN Ag(c1,conexionesDirectas(c,m)) ELSE conexionesDirectas(c,m) FI} FI}}
 	
-	\tadAxioma{existeCamino(c1, c2,m}{\IF c2 $\in$ conexionesDirectas(c1,mapa) $\lor$ c1 $\in$ conexionesDirectas(c2,mapa) THEN true ELSE existenCaminos(conexionesDirectas(c1,m),c2,m) $\lor$ existenCaminos(conexionesDirectas(c2,m),c1,m) FI}
-	\tadAxioma{existenCaminos(cs, c, m)}{\IF vacio?(cs) THEN false ELSE existeCamino( dameUno(cs),c, m) $\lor$ existenCaminos( sinUno(cs),c, m) FI}
-	\tadAxioma{movimientoInvalido(c1, c2, m)}{distancia(c1,c2) $\geq$ 10 $\lor$ !existenCaminos(c1,c2,m) }
+	\tadAxioma{existeCamino(c1, c2,m)}{\IF c2 $\in$ conexionesDirectas(c1,mapa) $\lor$ c1 $\in$ conexionesDirectas(c2,mapa) THEN true ELSE existenCaminos(conexionesDirectas(c1,m),c2,m) $\lor$ existenCaminos(conexionesDirectas(c2,m),c1,m) FI}
+	\tadAxioma{existenCaminos(cs, c, m)}{\IF vacio?(cs) THEN false ELSE existeCamino(dameUno(cs),c, m) $\lor$ existenCaminos( sinUno(cs),c, m) FI}
+	\tadAxioma{movimientoInvalido(c1, c2, m)}{distancia(c1,c2) $\geq$ 100 $\lor$ !existenCaminos(c1,c2,m) }
 	\tadAxioma{distancia(c1, c2)}{(restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) * (restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) + (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2))) * (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2)))) }
-	\tadAxioma{estaEnElMismoRango(c1, c2)}{ distancia(c1,c2) $\leq$ 5 * 5}
+	\tadAxioma{estanEnElMismoRango(c1, c2)}{ distancia(c1,c2) $\leq$ 5 * 5}
 	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
 
 
