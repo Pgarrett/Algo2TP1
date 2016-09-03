@@ -4,8 +4,8 @@
 	\tadGeneros{mapa}
 	\tadIgualdadObservacional{m}{m'}{Mapa}
                          {(posiciones(m) $\igobs$ posiciones(m')) $\land$ \\ 
-                         ($\forall$ c1,c2: Coordenada) \\
-                         (existeCamino(c1,c2,m)$\leftrightarrow$ existeCamino(c1,c2,m')) }
+                         ($\forall$ c1: Coordenada) \\
+                         (conexionesDirectas(c1,m) $\igobs$ conexionesDirectas(c1,m')) }
 
 		\tadExporta{Mapa,
             generadores,
@@ -15,18 +15,20 @@
         	\tadNombre{Conj()}}
 	
 	\tadObservadores
-	\tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Coordenada/c2, Mapa/m, bool}
+	\tadAlinearFunciones{conexionesDirectas~}{Coordenada/c, Mapa/m, Conj(Coordenada)}
 	
     \tadOperacion{posiciones}{Mapa/m}{Conj(Coordenada)}{}
-    \tadOperacion{existeCamino}{Coordenada/c1, Coordenada/c2, Mapa/m}{bool}{}
+    \tadOperacion{conexionesDirectas}{Coordenada/c, Mapa/m}{Conj(Coordenada)}{}
 
 
 	\tadGeneradores
 	\tadAlinearFunciones{agCoordenada~}{Coordenada/c, Conj(Coordenada)/cs, Mapa/m, Mapa}
-	
+	\tadAlinearFunciones{conectarCoordenadas~}{Coordenada/c1, Coordenada/c2, Mapa/m, Mapa}
     \tadOperacion{crear}{}{Mapa}{}{}
-    \tadOperacion{agCoordenada}{Coordenada/c, Conj(Coordenada)/cs, Mapa/m}{Mapa}
-    	{cs $\subseteq$ posiciones(m) $\land$ c $\notin$ posiciones(m)}
+    \tadOperacion{agCoordenada}{Coordenada/c, Mapa/m}{Mapa}
+    	{c $\notin$ posiciones(m)}
+    \tadOperacion{conectarCoordenadas}{Coordenada/c1, Coordenada/c2, Mapa/m}{Mapa}
+    	{c1 $\neq$ c2 $\yluego$ c1,c2 $\in$ posiciones(m)}
     	
     \tadOtrasOperaciones
     \tadAlinearFunciones{existenCaminos~}{Coordenada/c1, Conj(Coordenada)/cs, Mapa/m, bool}
@@ -34,10 +36,14 @@
     
     \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
 	\tadAxioma{posiciones(crear())}{$\emptyset$}
-	\tadAxioma{posiciones(agCoordenada(c, cs, m))}{Ag(c, posiciones(m))}
-	\tadAxioma{existeCamino(c1, c2, crear())}{false}
-	\tadAxioma{existeCamino(c1, c2, agCoordenada(c, cs, m))}{\IF c1 $\notin$ posiciones(m) THEN {\IF c2 $\notin$ posiciones(m) THEN false ELSE {\IF c1 == c2 THEN {\IF c2 $\in$ cs THEN true ELSE existenCaminos(c2,cs,m) FI} ELSE false FI} FI} ELSE {\IF c2 $\in$ posiciones(m) THEN {\IF c2 == c THEN {\IF c1 $\in$ cs THEN true ELSE existenCaminos(c1,cs,m) FI} ELSE false FI} ELSE existeCamino(c1,c2,m) FI} FI}
-	\tadAxioma{existenCaminos(c, cs, m)}{\IF vacio?(cs) THEN false ELSE existeCamino(c, dameUno(cs), m) $\lor$ existenCaminos(c, sinUno(cs), m) FI}
+	\tadAxioma{posiciones(agCoordenada(c, m))}{Ag(c, posiciones(m))}
+	\tadAxioma{posiciones(conectarCoordenadas(c1, c2, m))}{posiciones(m)}
+	\tadAxioma{conexionesDirectas(c,crear())}{vacio}
+	\tadAxioma{conexionesDirectas(c,agCoordenada(c1, m))}{conexionesDirectas(c,m)}
+	\tadAxioma{conexionesDirectas(c,conectarCoordenadas(c1, c2, m))}{{\IF c=c1 THEN Ag(c2,conexionesDirectas(c,m)) ELSE {\IF c=c2 THEN Ag(c1,conexionesDirectas(c,m)) ELSE conexionesDirectas(c,m) FI} FI}}
+	
+	\tadAxioma{existeCamino(c1, c2,m}{\IF c2 $\in$ conexionesDirectas(c1,mapa) $\lor$ c1 $\in$ conexionesDirectas(c2,mapa) THEN true ELSE existenCaminos(conexionesDirectas(c1,m),c2,m) $\lor$ existenCaminos(conexionesDirectas(c2,m),c1,m) FI}
+	\tadAxioma{existenCaminos(cs, c, m)}{\IF vacio?(cs) THEN false ELSE existeCamino( dameUno(cs),c, m) $\lor$ existenCaminos( sinUno(cs),c, m) FI}
 
 
     
