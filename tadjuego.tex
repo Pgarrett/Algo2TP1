@@ -15,15 +15,15 @@
 	\tadNombre{Pokemones},
 	\tadNombre{Tipo},
 	\tadNombre{Coordenada},
-	\tadNombre{Conjunto(Coordenada)}
+	\tadNombre{Conjunto(Coordenada)},
 	\tadNombre{Conjunto(Jugador)}}
 	\tadIgualdadObservacional{pGo}{pGo'}{juego}
                          {(mapa(pGo) $\igobs$ mapa(pGo')) $\yluego$  \\
 						 (jugadores(pGo) $\igobs$ jugadores(pGo')) $\yluego$  \\
-     					  pokemones(pGo) $\igobs$ pokemones(pGo') $\yluego$ \\
-                         ($\forall$ j: Jugador) def?(j,jugadores(j)) (posicionJugador(j,pGo) $\igobs$ posicionJugador(j,pGo') $\wedge$ \\ cantidadDeSanciones(j,pGo) $\igobs$ cantidadDeSanciones(j,pGo')) $\yluego$ \\
-						 ($\forall$ j: Jugador) def?(j,jugadores(j)) pokemonesAtrapados(j,pGo) $\igobs$ pokemonesAtrapados(j,pGo') $\yluego$ \\
-						 ($\forall$ p: Pokemon) def?($\Pi_1$(p),pokemones(pGo)) (posicionPokemon(p,pGo) $\igobs$ posicionPokemon(p,pGo')                          $\wedge$ \\ cuantoLlevaEsperando(p,pGo) $\igobs$ cuantoLlevaEsperando(p,pGo'))
+     					  (pokemones(pGo) $\igobs$ pokemones(pGo')) $\yluego$ \\
+                         ($\forall$ j: Jugador) def?(j,jugadores(pGo)) $\impluego$ (posicionJugador(j,pGo) $\igobs$ posicionJugador(j,pGo') $\land$ \\ cantidadDeSanciones(j,pGo) $\igobs$ cantidadDeSanciones(j,pGo') $\land$ \\
+						  pokemonesAtrapados(j,pGo) $\igobs$ pokemonesAtrapados(j,pGo')) $\yluego$ \\
+						 ($\forall$ p: Pokemon) def?($\Pi_1$(p),pokemones(pGo)) $\impluego$ (posicionPokemon(p,pGo) $\igobs$ posicionPokemon(p,pGo')                          $\land$ \\ cuantoLlevaEsperando(p,pGo) $\igobs$ cuantoLlevaEsperando(p,pGo'))
                          }
 	
 	
