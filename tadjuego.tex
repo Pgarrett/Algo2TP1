@@ -63,16 +63,16 @@
     \tadOperacion{esPosicionValidaPokemon}{Coordenada/c, Juego/pGo}{bool}{}
     \tadOperacion{estaEnElRangoDeOtroPokemon}{Coordenada/c, Conj(Nat)/ps, Juego/pGo}{Bool}{esPosicionValidaMapa(c,pGo) $\land$ ps $\subseteq$ claves(pokemones(pGo))}
 	\tadOperacion{esSalvaje?}{Pokemon/p, Juego/pGo}{Bool}{def?($\Pi_1$(p),pokemones(pGo))}
-	\tadOperacion{esSalvajeAux}{Nat/id, Conj(Nat)/js, Juego/pGo}{Bool}{def?(id,pokemones(pGo)) $\wedge$ js $\subseteq$ claves(jugadores(pGo))}        
+	\tadOperacion{esSalvajeAux}{Nat/id, Conj(Nat)/js, Juego/pGo}{Bool}{def?(id,pokemones(pGo)) $\land$ js $\subseteq$ claves(jugadores(pGo))}        
     \tadOperacion{estaEnRangoDeAtrapar}{Jugador/j, Juego/pGo}{Bool}{def?(j, jugadores(pGo))} 
-    \tadOperacion{estaEnRangoDeAtraparAux}{Jugador/j, Conj(Nat)/cp, Juego/pGo}{Bool}{def?(j, jugadores(pGo)) $\wedge$ cp $\subseteq$ claves(pokemones(pGo))} 
+    \tadOperacion{estaEnRangoDeAtraparAux}{Jugador/j, Conj(Nat)/ps, Juego/pGo}{Bool}{def?(j, jugadores(pGo)) $\land$ ps $\subseteq$ claves(pokemones(pGo))} 
 	\tadOperacion{pokemonDelRango}{Jugador/j, Juego/pGo}{Pokemon}{def?(j, jugadores(pGo)) $\yluego$ estaEnRangoDeAtrapar(j,pGo)}   
-	\tadOperacion{pokemonDelRangoAux}{Jugador/j, Conj(Nat)/cp, Juego/pGo}{Pokemon}{def?(j, jugadores(pGo)) $\yluego$ estaEnRangoDeAtrapar(j,pGo) $\wedge$ cp $\subseteq$ claves(pokemones(pGo))}   
+	\tadOperacion{pokemonDelRangoAux}{Jugador/j, Conj(Nat)/ps, Juego/pGo}{Pokemon}{def?(j, jugadores(pGo)) $\yluego$ estaEnRangoDeAtrapar(j,pGo) $\land$ ps $\subseteq$ claves(pokemones(pGo))}   
     \tadOperacion{jugadoresDelRango}{Coordenada/c, Juego/pGo}{Conj(Jugador)}{esPosicionValidaMapa(c, pGo)}
-    \tadOperacion{jugadoresDelRangoAux}{Coordenada/c, Conj(Jugador)/js, Juego/pGo}{Conj(Jugador)}{esPosicionValidaMapa(c, pGo) $\wedge$ js $\subseteq$ claves(jugadores(pGo))}
+    \tadOperacion{jugadoresDelRangoAux}{Coordenada/c, Conj(Jugador)/js, Juego/pGo}{Conj(Jugador)}{esPosicionValidaMapa(c, pGo) $\land$ js $\subseteq$ claves(jugadores(pGo))}
     \tadOperacion{restaAbsoluta}{Nat/n1, Nat/n2}{Nat}{}
     \tadOperacion{rareza}{Tipo/t, Juego/pGo}{Nat}{estaDefTipo(t,claves(pokemones(pGo))),pGo)}        
-    \tadOperacion{cantidadPokemonesTipo}{Tipo/t, Conj(Nat)/ps, Juego/pGo}{Nat}{estaDefTipo(t,claves(pokemones(pGo))),pGo $\wedge$ ps $\subseteq$ claves(pokemones(pGo))}
+    \tadOperacion{cantidadPokemonesTipo}{Tipo/t, Conj(Nat)/ps, Juego/pGo}{Nat}{estaDefTipo(t,claves(pokemones(pGo))),pGo $\land$ ps $\subseteq$ claves(pokemones(pGo))}
     \tadOperacion{dividir}{Nat/n, Nat/d}{Nat}{$\neg$(d = 0?)}
     \tadOperacion{estaDefTipo}{Tipo/t, conj(nat)/ps, Juego/pGo}{Bool}{ps $\subseteq$ claves(pokemones(pGo))}
     \tadOperacion{estaConectado?}{Jugador/j, Juego/pGo}{Bool}{def?(j,jugadores(pGo))}{}
@@ -149,28 +149,29 @@
 	%%% otrasOperaciones
 	\tadAxioma{esPosicionValidaMapa(c, pGo)}{c $\in$ posiciones(mapa(pGo))}
 	\tadAxioma{esPosicionValidaPokemon(c, pGo)}{esPosicionValidaMapa(c, pGo) $\yluego$ $\neg$ estaEnElRangoDeOtroPokemon(c, claves(pokemones(pGo)),pGo)}
-	\tadAxioma{estaEnElRangoDeOtroPokemon(c, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE territorioOcupado(c,posicionPokemon($<$dameUno(ps), obtener(dameUno(ps), pokemones(pGo))$>$, pGo), mapa(pGo)) $\vee$ estaEnElRangoDeOtroPokemon(c,sinUno(ps),pGo) FI}
+	\tadAxioma{estaEnElRangoDeOtroPokemon(c, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE territorioOcupado(c,posicionPokemon($\langle$dameUno(ps), obtener(dameUno(ps), pokemones(pGo))$\rangle$, pGo), mapa(pGo)) $\vee$ estaEnElRangoDeOtroPokemon(c,sinUno(ps),pGo) FI}
 	
 	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
-  \tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t,(claves(pokemones(pGo)), pGo), \#claves(pokemones(pGo)))) * 100}
-  \tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps)) == t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
-  \tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
+	\tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t,(claves(pokemones(pGo)), pGo), \#claves(pokemones(pGo)))) * 100}
+	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps)) == t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
+	\tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
   
-  \tadAxioma{sacarPokemones(cp, pGo)}{\IF $\emptyset$?(cp) THEN pokemones(pGo) ELSE borrar(dameUno(cp), sacarPokemones(sinUno(cp),pokemones(pGo))) FI} 
+	\tadAxioma{sacarPokemones(cp, pGo)}{\IF $\emptyset$?(cp) THEN pokemones(pGo) ELSE borrar(dameUno(cp), sacarPokemones(sinUno(cp),pokemones(pGo))) FI} 
      
-      \tadAxioma{estaDefTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE {\IF t = obtener(dameUno(ps),pokemones(pGo)) THEN true ELSE estaDefTipo(t,sinUno(ps),pGo) FI} FI}
+    \tadAxioma{estaDefTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE {\IF t = obtener(dameUno(ps),pokemones(pGo)) THEN true ELSE estaDefTipo(t,sinUno(ps),pGo) FI} FI}
   
-  \tadAxioma{esSalvaje?(p, pGo)}{esSalvajeAux($\Pi_1$(p), claves(jugadores(pGo)), pGo} 
+  	\tadAxioma{esSalvaje?(p, pGo)}{esSalvajeAux($\Pi_1$(p), claves(jugadores(pGo)), pGo)} 
   
     \tadAxioma{esSalvajeAux(id,js,pGo)}{\IF $\emptyset$?(js) THEN true ELSE {\IF def?(id,pokemonesAtrapados(dameUno(js),pGo)) THEN false ELSE esSalvajeAux(id,sinUno(js),pGo)) FI} FI}
     
     \tadAxioma{estaEnRangoDeAtrapar(j,pGo)}{estaEnRangoDeAtraparAux(j, claves(pokemones(pGo)))}
-    \tadAxioma{estaEnRangoDeAtraparAux(j,cp,pGo)}{\IF $\emptyset$?(cp) THEN false ELSE estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(cp),obtener(dameUno(cp),pokemones(pGo))$\rangle$,pGo), mapa(pGo)) $\vee$ estaEnRangoDeAtraparAux(j,sinUno(cp),pGo) FI}
+    \tadAxioma{estaEnRangoDeAtraparAux(j,ps,pGo)}{\IF $\emptyset$?(ps) THEN false ELSE estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$,pGo), mapa(pGo)) $\vee$ estaEnRangoDeAtraparAux(j,sinUno(ps),pGo) FI}
+	
 	\tadAxioma{jugadoresDelRango(c,pGo)}{jugadoresDelRangoAux(c,claves(jugadores(pGo)),pGo)}
-	\tadAxioma{jugadoresDelRangoAux(c,js,pGo)}{\IF $\emptyset$?(js) THEN $\emptyset$ ELSE {\IF estaConectado?(dameUno(js),pGo) THEN {\IF estanEnElMismoRango(c,posicionJugador(dameUno(js)),mapa(pGo)) THEN Ag(dameUno(js),jugadoresDelRangoAux(c,sinUno(js),pGo)) ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} FI}    
+	\tadAxioma{jugadoresDelRangoAux(c,js,pGo)}{\IF $\emptyset$?(js) THEN $\emptyset$ ELSE {\IF estaConectado?(dameUno(js),pGo) THEN {\IF estanEnElMismoRango(c,posicionJugador($\langle$dameUno(js), obtener(dameUno(js), jugadores(pGo))$\rangle$)) THEN Ag(dameUno(js),jugadoresDelRangoAux(c,sinUno(js),pGo)) ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} FI}    
 
 	\tadAxioma{pokemonDelRango(j,pGo)}{pokemonDelRangoAux(j,claves(pokemones(pGo)),pGo)}
-	\tadAxioma{pokemonDelRangoAux(j,cp,pGo)}{\IF estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(cp),obtener(dameUno(cp),pokemones(pGo))$\rangle$,mapa(pGo))) THEN $\langle$dameUno(cp),obtener(dameUno(cp),pokemones(pGo))$\rangle$ ELSE pokemonDelRangoAux(j,sinUno(cp),pGo) FI}
+	\tadAxioma{pokemonDelRangoAux(j,ps,pGo)}{\IF estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$, pGo)) THEN $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$ ELSE pokemonDelRangoAux(j,sinUno(ps),pGo) FI}
 
 
 \end{tad}
