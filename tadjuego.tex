@@ -52,10 +52,9 @@
     \tadOperacion{agPokemon}{Pokemon/p, Coordenada/c, Juego/pGo}{Juego}
     	{$\neg$ def?($\Pi_1$(p),pokemones(pGo)) $\yluego$ esPosicionValidaPokemon(c, pGo)}
     \tadOperacion{moverJugador}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}
-    	{def?(j, jugadores(pGo)) $\yluego$ esPosicionValidaMapa(c, pGo) $\yluego$ estaConectado?(j,pGo) $\yluego$ posicionJugador(j) $\neq$ c }
+    	{def?(j, jugadores(pGo)) $\yluego$ esPosicionValidaMapa(c, pGo) $\yluego$ estaConectado?(j,pGo)}
     \tadOperacion{conectar}{Jugador/j, Coordenada/c, Juego/pGo}{Juego}{def?(j, jugadores(pGo)) $\yluego$ $\neg$ estaConectado?(j,pGo) $\wedge$ esPosicionValidaMapa(c, pGo)}
     \tadOperacion{desconectar}{Jugador/j, Juego/pGo}{Juego}{def?(j, jugadores(pGo)) $\yluego$ estaConectado?(j,pGo)}
-    %% moverJugador automaticamente se conecta
     	
     %%% Otras Operaciones %%%
     \tadOtrasOperaciones
