@@ -76,7 +76,7 @@
     \tadOperacion{dividir}{Nat/n, Nat/d}{Nat}{$\neg$(d = 0?)}
     \tadOperacion{estaDefTipo}{Tipo/t, conj(nat)/ps, Juego/pGo}{Bool}{ps $\subseteq$ claves(pokemones(pGo))}
     \tadOperacion{estaConectado?}{Jugador/j, Juego/pGo}{Bool}{def?(j,jugadores(pGo))}{}
-	\tadOperacion{sacarPokemones}{Conj(nat)/cp, Juego/pGo}{Pokemones}{cp $\subseteq$ claves(pokemones(pGo))}{}
+	\tadOperacion{sacarPokemones}{Conj(nat)/ps, Juego/pGo}{Pokemones}{cp $\subseteq$ claves(pokemones(pGo))}{}
     
 	%%% Axiomas %%%
 	\tadAxiomas[\paratodo{Mapa}{m} \paratodo{Jugador}{j,j1,j2} \paratodo{Coordenada}{c} \paratodo{Juego}{pGo} \paratodo{Pokemon}{p} \paratodo{Nat}{n} \paratodo{Tipo}{t}]
@@ -161,7 +161,7 @@
 	
 	\tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
   
-	\tadAxioma{sacarPokemones(cp, pGo)}{\IF $\emptyset$?(cp) THEN pokemones(pGo) ELSE borrar(dameUno(cp), sacarPokemones(sinUno(cp),pokemones(pGo))) FI} 
+	\tadAxioma{sacarPokemones(ps, pGo)}{\IF $\emptyset$?(ps) THEN pokemones(pGo) ELSE borrar(dameUno(ps), sacarPokemones(sinUno(ps),pokemones(pGo))) FI} 
      
     \tadAxioma{estaDefTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE {\IF t = obtener(dameUno(ps),pokemones(pGo)) THEN true ELSE estaDefTipo(t,sinUno(ps),pGo) FI} FI}
   
@@ -180,6 +180,8 @@
 	\tadAxioma{pokemonDelRango(j,pGo)}{pokemonDelRangoAux(j,claves(pokemones(pGo)),pGo)}
 	
 	\tadAxioma{pokemonDelRangoAux(j,ps,pGo)}{\IF estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$, pGo)) THEN $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$ ELSE pokemonDelRangoAux(j,sinUno(ps),pGo) FI}
+	
+	\tadAxioma{estaConectado?(j, pGo)}{\IF obtener(j, jugadores(pGo)) = Conectado THEN true ELSE false FI}
 
 
 \end{tad}
