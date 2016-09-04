@@ -6,7 +6,8 @@
 	generadores, 
 	observadores, 
 	movimientoInvalido, 
-	estanEnElMismoRango}
+	estanEnElMismoRango, 
+	territorioOcupado}
 	\tadUsa{\tadNombre{Nat},
 	\tadNombre{Bool},
 	\tadNombre{Coordenada},
@@ -42,6 +43,7 @@
     \tadOperacion{distancia}{Coordenada/c1, Coordenada/c2}{Nat}{}{}
     \tadOperacion{estanEnElMismoRango}{Coordenada/c1, Coordenada/c2}{bool}{}{}
     \tadOperacion{restaAbsoluta}{Coordenada/c1, Coordenada/c2}{Nat}{}{}
+	\tadOperacion{territorioOcupado}{Coordenada/c1, Coordenada/c2, Mapa/m}{{c1,c2} $\in$ posiciones(m)}{}
     
     \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
 	\tadAxioma{posiciones(crear())}{$\emptyset$}
@@ -51,13 +53,13 @@
 	\tadAxioma{conexionesDirectas(c,agCoordenada(c1, m))}{conexionesDirectas(c,m)}
 	\tadAxioma{conexionesDirectas(c,conectarCoordenadas(c1, c2, m))}{{\IF c=c1 THEN Ag(c2,conexionesDirectas(c,m)) ELSE {\IF c=c2 THEN Ag(c1,conexionesDirectas(c,m)) ELSE conexionesDirectas(c,m) FI} FI}}
 	
-	\tadAxioma{existeCamino(c1, c2,m)}{\IF c2 $\in$ conexionesDirectas(c1,mapa) $\lor$ c1 $\in$ conexionesDirectas(c2,mapa) THEN true ELSE existenCaminos(conexionesDirectas(c1,m),c2,m) $\lor$ existenCaminos(conexionesDirectas(c2,m),c1,m) FI}
+	\tadAxioma{existeCamino(c1,c2,m)}{\IF c2 $\in$ conexionesDirectas(c1,mapa) $\lor$ c1 $\in$ conexionesDirectas(c2,mapa) THEN true ELSE existenCaminos(conexionesDirectas(c1,m),c2,m) $\lor$ existenCaminos(conexionesDirectas(c2,m),c1,m) FI}
 	\tadAxioma{existenCaminos(cs, c, m)}{\IF vacio?(cs) THEN false ELSE existeCamino(dameUno(cs),c, m) $\lor$ existenCaminos( sinUno(cs),c, m) FI}
 	\tadAxioma{movimientoInvalido(c1, c2, m)}{distancia(c1,c2) $\geq$ 100 $\lor$ !existenCaminos(c1,c2,m) }
 	\tadAxioma{distancia(c1, c2)}{(restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) * (restaAbsoluta($\Pi_1$(c1), $\Pi_1$(c2))) + (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2))) * (restaAbsoluta($\Pi_2$(c1), $\Pi_2$(c2)))) }
-	\tadAxioma{estanEnElMismoRango(c1, c2)}{ distancia(c1,c2) $\leq$ 5 * 5}
+	\tadAxioma{estanEnElMismoRango(c1, c2)}{distancia(c1,c2) $\leq$ 2 * 2}
 	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
-
+	\tadAxioma{territorioOcupado(c1,c2,m)}{\IF distancia(c1, c2) $\geq$ 5 * 5 THEN False ELSE True FI}
 
     
 \end{tad}
