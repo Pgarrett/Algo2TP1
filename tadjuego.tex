@@ -157,7 +157,7 @@
 
 	\tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t,(claves(pokemones(pGo)), pGo), \#claves(pokemones(pGo)))) * 100}
 
-	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps)) = t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
+	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps), pokemones(pGo)) = t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
 	
 	\tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
   
@@ -178,6 +178,7 @@
 	\tadAxioma{jugadoresDelRangoAux(c,js,pGo)}{\IF $\emptyset$?(js) THEN $\emptyset$ ELSE {\IF estaConectado?(dameUno(js),pGo) THEN {\IF estanEnElMismoRango(c,posicionJugador($\langle$dameUno(js), obtener(dameUno(js), jugadores(pGo))$\rangle$)) THEN Ag(dameUno(js),jugadoresDelRangoAux(c,sinUno(js),pGo)) ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} FI}    
 
 	\tadAxioma{pokemonDelRango(j,pGo)}{pokemonDelRangoAux(j,claves(pokemones(pGo)),pGo)}
+	
 	\tadAxioma{pokemonDelRangoAux(j,ps,pGo)}{\IF estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$, pGo)) THEN $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$ ELSE pokemonDelRangoAux(j,sinUno(ps),pGo) FI}
 
 
