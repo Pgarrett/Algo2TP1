@@ -155,7 +155,7 @@
 	
 	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
 
-	\tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t,(claves(pokemones(pGo)), pGo), \#claves(pokemones(pGo)))) * 100}
+	\tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t, claves(pokemones(pGo)), pGo) * 100, \#claves(pokemones(pGo))))}
 
 	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps), pokemones(pGo)) = t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
 	
