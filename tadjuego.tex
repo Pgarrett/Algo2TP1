@@ -148,12 +148,17 @@
 	$\newline$
 	%%% otrasOperaciones
 	\tadAxioma{esPosicionValidaMapa(c, pGo)}{c $\in$ posiciones(mapa(pGo))}
+	
 	\tadAxioma{esPosicionValidaPokemon(c, pGo)}{esPosicionValidaMapa(c, pGo) $\yluego$ $\neg$ estaEnElRangoDeOtroPokemon(c, claves(pokemones(pGo)),pGo)}
+
 	\tadAxioma{estaEnElRangoDeOtroPokemon(c, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE territorioOcupado(c,posicionPokemon($\langle$dameUno(ps), obtener(dameUno(ps), pokemones(pGo))$\rangle$, pGo), mapa(pGo)) $\vee$ estaEnElRangoDeOtroPokemon(c,sinUno(ps),pGo) FI}
 	
 	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
+
 	\tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t,(claves(pokemones(pGo)), pGo), \#claves(pokemones(pGo)))) * 100}
-	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps)) == t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
+
+	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps)) = t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
+	
 	\tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
   
 	\tadAxioma{sacarPokemones(cp, pGo)}{\IF $\emptyset$?(cp) THEN pokemones(pGo) ELSE borrar(dameUno(cp), sacarPokemones(sinUno(cp),pokemones(pGo))) FI} 
@@ -165,9 +170,11 @@
     \tadAxioma{esSalvajeAux(id,js,pGo)}{\IF $\emptyset$?(js) THEN true ELSE {\IF def?(id,pokemonesAtrapados(dameUno(js),pGo)) THEN false ELSE esSalvajeAux(id,sinUno(js),pGo)) FI} FI}
     
     \tadAxioma{estaEnRangoDeAtrapar(j,pGo)}{estaEnRangoDeAtraparAux(j, claves(pokemones(pGo)))}
+    
     \tadAxioma{estaEnRangoDeAtraparAux(j,ps,pGo)}{\IF $\emptyset$?(ps) THEN false ELSE estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$,pGo), mapa(pGo)) $\vee$ estaEnRangoDeAtraparAux(j,sinUno(ps),pGo) FI}
 	
 	\tadAxioma{jugadoresDelRango(c,pGo)}{jugadoresDelRangoAux(c,claves(jugadores(pGo)),pGo)}
+	
 	\tadAxioma{jugadoresDelRangoAux(c,js,pGo)}{\IF $\emptyset$?(js) THEN $\emptyset$ ELSE {\IF estaConectado?(dameUno(js),pGo) THEN {\IF estanEnElMismoRango(c,posicionJugador($\langle$dameUno(js), obtener(dameUno(js), jugadores(pGo))$\rangle$)) THEN Ag(dameUno(js),jugadoresDelRangoAux(c,sinUno(js),pGo)) ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} FI}    
 
 	\tadAxioma{pokemonDelRango(j,pGo)}{pokemonDelRangoAux(j,claves(pokemones(pGo)),pGo)}
