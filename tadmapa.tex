@@ -46,10 +46,12 @@
 	\tadOperacion{territorioOcupado}{Coordenada/c1, Coordenada/c2, Mapa/m}{{c1,c2} $\in$ posiciones(m)}{}
     
     \tadAxiomas[\paratodo{Coordenada}{c, c1, c2} \paratodo{conj(Coordenada)}{cs} \paratodo{Mapa}{m}]
+    \tadAlinearAxiomas{conexionesDirectas(c,conectarCoordenadas(c1, c2, m))}
+    
 	\tadAxioma{posiciones(crear())}{$\emptyset$}
 	\tadAxioma{posiciones(agCoordenada(c, m))}{Ag(c, posiciones(m))}
 	\tadAxioma{posiciones(conectarCoordenadas(c1, c2, m))}{posiciones(m)}
-	\tadAxioma{conexionesDirectas(c,crear())}{vacio}
+	\tadAxioma{conexionesDirectas(c,crear())}{$\emptyset$}
 	\tadAxioma{conexionesDirectas(c,agCoordenada(c1, m))}{conexionesDirectas(c,m)}
 	\tadAxioma{conexionesDirectas(c,conectarCoordenadas(c1, c2, m))}{{\IF c=c1 THEN Ag(c2,conexionesDirectas(c,m)) ELSE {\IF c=c2 THEN Ag(c1,conexionesDirectas(c,m)) ELSE conexionesDirectas(c,m) FI} FI}}
 	
