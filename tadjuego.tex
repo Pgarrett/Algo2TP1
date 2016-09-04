@@ -95,9 +95,9 @@
 	\tadAxioma{pokemones(agJugador(j, c, pGo))}{pokemones(pGo)}
 	\tadAxioma{posicionPokemon(p, agJugador(j, c, pGo))}{posicionPokemon(p, pGo)}
 	
-  	\tadAxioma{cuantoLlevaEsperando(p,agJugador(j, c, pGo))}{\IF estanEnElMismoRango(posicionPokemon(p,pGo), c, mapa(pGo)) THEN 0 ELSE cuantoLLevaEsperando(p, pGo) + 1 FI} 
+  	\tadAxioma{cuantoLlevaEsperando(p, agJugador(j, c, pGo))}{\IF estanEnElMismoRango($\newline$ posicionPokemon(p, pGo), c, mapa(pGo)) THEN 0 ELSE cuantoLLevaEsperando(p, pGo) + 1 FI} 
 	
-	\tadAxioma{pokemonesAtrapados(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN $\emptyset$ ELSE {\IF estanEnElMismoRango(posicionJugador(j1, pGo), c, pGo) THEN pokemonesAtrapados(j1, pGo) ELSE {\IF (estaEnRangoDeAtrapar(j1,pGo)) THEN {\IF cuantoLlevaEsperando(pokemonDelRango(j1, pGo), pGo) = 9 THEN {\IF j1 = dameUno(jugadoresDelRango(posicionPokemon(pokemonDelRango(j1, pGo), pGo), pGo)) THEN definir($\Pi_1$(pokemonDelRango(j1, pGo)), $\Pi_2$(pokemonDelRango(j1, pGo)), pokemonesAtrapados(j1, pGo)) ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI} FI}
+	\tadAxioma{pokemonesAtrapados(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN $\emptyset$ ELSE {\IF estanEnElMismoRango(posicionJugador(j1, pGo), c, pGo) THEN pokemonesAtrapados(j1, pGo) ELSE {\IF estaEnRangoDeAtrapar(j1,pGo) THEN {\IF cuantoLlevaEsperando(pokemonDelRango(j1, pGo), pGo) = 9 THEN {\IF j1 = dameUno($\newline$jugadoresDelRango(posicionPokemon($\newline$pokemonDelRango(j1, pGo), pGo), pGo)) THEN definir($\newline$ $\Pi_1$(pokemonDelRango(j1, pGo)), $\Pi_2$(pokemonDelRango(j1, pGo)), pokemonesAtrapados(j1, pGo)) ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI} FI}
   
   \tadAxioma{cantidadDeSanciones(j1, agJugador(j2, c, pGo))}{\IF j1 = j2 THEN 0 ELSE cantidadDeSanciones(j1) FI}
   
@@ -115,25 +115,34 @@
 	$\newline$
 	%%% moverJugador
 	\tadAxioma{mapa(moverJugador(j, c, pGo))}{mapa(pGo)}
+	
 	\tadAxioma{jugadores(moverJugador(j,c,pGo))}{\IF movimientoInvalido(posicionJugador(j,pGo),c,mapa(pGo)) THEN {\IF cantidadDeSanciones(j,pGo) = 4 THEN borrar(j,jugadores(pGo)) ELSE jugadores(pGo) FI} ELSE jugadores(pGo) FI}
+
 	\tadAxioma{posicionJugador(j1, moverJugador(j2,c,pGo))}{\IF j1 = j2 THEN c ELSE posicionJugador(j1,pGo) FI}
-	\tadAxioma{pokemones(moverJugador(j,c,pGo))}{\IF movimientoInvalido(posicionJugador(j,pGo),c,mapa(pGo)) THEN {\IF cantidadDeSanciones(j,pGo) = 4 THEN sacarPokemones(claves(pokemonesAtrapados(j,pGo)),pGo) ELSE pokemones(pGo) FI} ELSE pokemones(pGo) FI}
+
+	\tadAxioma{pokemones(moverJugador(j,c,pGo))}{\IF movimientoInvalido(posicionJugador(j,pGo),c,mapa(pGo)) THEN {\IF cantidadDeSanciones(j,pGo) = 4 THEN sacarPokemones(claves($\newline$pokemonesAtrapados(j,pGo)),pGo) ELSE pokemones(pGo) FI} ELSE pokemones(pGo) FI}
+
 	\tadAxioma{posicionPokemon(p,moverJugador(j,c,pGo))}{posicionPokemon(pGo)}
-	\tadAxioma{cuantoLlevaEsperando(p,moverJugador(j,c,pGo))}{\IF estanEnElMismoRango(posicionPokemon(p,pGo),posicionJugador(j,pGo),mapa(pGo)) THEN {\IF estanEnElMismoRango(posicionPokemon(p,pGo),c,mapa(pGo)) THEN cuantoLlevaEsperando(p,pGo) ELSE cuantoLlevaEsperando(p,pGo) + 1 FI} ELSE {\IF estanEnElMismoRango(posicionPokemon(p,pGo),c,mapa(pGo)) THEN 0 ELSE cuantoLlevaEsperando(p,pGo) + 1 FI} FI}
+
+	\tadAxioma{cuantoLlevaEsperando(p,moverJugador(j,c,pGo))}{\IF estanEnElMismoRango(posicionPokemon(p,pGo), $\newline$posicionJugador(j,pGo),mapa(pGo)) THEN {\IF estanEnElMismoRango(posicionPokemon(p,pGo),c,mapa(pGo)) THEN cuantoLlevaEsperando(p,pGo) ELSE cuantoLlevaEsperando(p,pGo) + 1 FI} ELSE {\IF estanEnElMismoRango(posicionPokemon(p,pGo),c,mapa(pGo)) THEN 0 ELSE cuantoLlevaEsperando(p,pGo) + 1 FI} FI}
 
 	\tadAxioma{cantidadDeSanciones(j1,moverJugador(j2,c,pGo))}{\IF j1 = j2 THEN {\IF movientoInvalido(poscionJugador(j1),c,pGo) THEN cantidadDeSanciones(j1,pGo) + 1 ELSE cantidadDeSanciones(j1,pGo) FI} ELSE cantidadDeSanciones(j1,pGo) FI}	
 
-	\tadAxioma{pokemonesAtrapados(j1, moverJugador(j2, c, pGo))}{\IF j1 = j2 THEN pokemonesAtrapados(j1, pGo) ELSE {\IF estaEnRangoDeAtrapar(j1, pGo) THEN {\IF estanEnElMismoRango(posicionJugador(j1, pGo), c, mapa(pGo)) THEN pokemonesAtrapados(j1, pGo) ELSE {\IF cuantoLlevaEsperando(pokemonDelRango(j1, pGo),pGo) = 9 THEN {\IF j1 = dameUno(jugadoresDelRango(posicionPokemon(pokemonDelRango(j1,pGo),pGo),pGo)) THEN definir($\Pi_1$(pokemonDelRango(j1, pGo)), $\Pi_2$(pokemonDelRango(j1, pGo)), pokemonesAtrapados(j1, pGo)) ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI}
+	\tadAxioma{pokemonesAtrapados(j1, moverJugador(j2, c, pGo))}{\IF j1 = j2 THEN pokemonesAtrapados(j1, pGo) ELSE {\IF estaEnRangoDeAtrapar(j1, pGo) THEN {\IF estanEnElMismoRango(posicionJugador(j1, pGo), c, mapa(pGo)) THEN pokemonesAtrapados(j1, pGo) ELSE {\IF cuantoLlevaEsperando(pokemonDelRango(j1, pGo),pGo) = 9 THEN {\IF j1 = dameUno(jugadoresDelRango($\newline$posicionPokemon(pokemonDelRango(j1,pGo),$\newline$pGo),pGo)) THEN definir($\newline$ $\Pi_1$(pokemonDelRango(j1, pGo)), $\Pi_2$(pokemonDelRango(j1, pGo)), pokemonesAtrapados(j1, pGo)) ELSE pokemonesAtrapados(j1, pGo) FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI} ELSE pokemonesAtrapados(j1, pGo) FI} FI}
 
 	$\newline$
 	%%% conectar
 	\tadAxioma{mapa(conectar(j,c,pGo))}{mapa(pGo)}
 	\tadAxioma{jugadores(conectar(j,c,pGo))}{definir(j, Conectado, jugadores(pGo))}
 	\tadAxioma{posicionJugador(j1,conectar(j2,c,pGo))}{\IF j1 = j2 THEN c ELSE posicionJugador(j1,pGo) FI}
+	
 	\tadAxioma{pokemones(conectar(j,c,pGo))}{pokemones(pGo)}
 	\tadAxioma{posicionPokemon(p,conectar(j,c,pGo))}{posicionPokemon(p,pGo)}
+
 	\tadAxioma{cuantoLlevaEsperando(p,conectar(j,c,pGo))}{\IF estanEnElMismoRango(posicionPokemon(p),c,mapa(pGo)) THEN 0 ELSE cuantoLlevaEsperando(p,pGo) + 1 FI}
-	\tadAxioma{pokemonesAtrapados(j1,conectar(j2,c,pGo))}{\IF j1 = j2 THEN pokemonesAtrapados(j1,pGo) ELSE {\IF estaEnRangoDeAtrapar(j1,pGo) THEN {\IF estanEnElMismoRango(posicionJugador(j1,pGo),c,mapa(pGo)) THEN pokemonesAtrapados(j1,pGo) ELSE {\IF cuantoLlevaEsperando(pokemonDelRango(j1,pGo),pGo)) = 9 THEN {\IF j1 = dameUno(JugadoresDelRango(posicionPokemon(pokemonDelRango(j1,pGo)))) THEN definir($\Pi_1$(pokemonDelRango(j1,pGo)), $\Pi_2$(pokemonDelRango(j1,pGo)), pokemonesAtrapados(j1,pGo)) ELSE pokemonesAtrapados(j1,pGo) FI} ELSE pokemonesAtrapados(j1,pGo) FI} FI} ELSE pokemonesAtrapados(j1,pGo) FI} FI}
+
+	\tadAxioma{pokemonesAtrapados(j1,conectar(j2,c,pGo))}{\IF j1 = j2 THEN pokemonesAtrapados(j1,pGo) ELSE {\IF estaEnRangoDeAtrapar(j1,pGo) THEN {\IF estanEnElMismoRango(posicionJugador(j1,pGo),c,mapa(pGo)) THEN pokemonesAtrapados(j1,pGo) ELSE {\IF cuantoLlevaEsperando(pokemonDelRango(j1,pGo),pGo)) = 9 THEN {\IF j1 = dameUno(jugadoresDelRango($\newline$posicionPokemon(pokemonDelRango(j1,pGo)))) THEN definir($\newline$ $\Pi_1$(pokemonDelRango(j1,pGo)), $\Pi_2$(pokemonDelRango(j1,pGo)), pokemonesAtrapados(j1,pGo)) ELSE pokemonesAtrapados(j1,pGo) FI} ELSE pokemonesAtrapados(j1,pGo) FI} FI} ELSE pokemonesAtrapados(j1,pGo) FI} FI}
+
 	\tadAxioma{cantidadDeSanciones(j1,conectar(j2,c,pGo))}{cantidadDeSanciones(j1,pGo)}
 	
 	$\newline$
@@ -152,19 +161,19 @@
 	%%% otrasOperaciones
 	\tadAxioma{esPosicionValidaMapa(c, pGo)}{c $\in$ posiciones(mapa(pGo))}
 	
-	\tadAxioma{esPosicionValidaPokemon(c, pGo)}{esPosicionValidaMapa(c, pGo) $\yluego$ $\neg$ estaEnElRangoDeOtroPokemon(c, claves(pokemones(pGo)),pGo)}
+	\tadAxioma{esPosicionValidaPokemon(c, pGo)}{esPosicionValidaMapa(c, pGo) $\yluego$ $\newline$ $\neg$ estaEnElRangoDeOtroPokemon(c, $\newline$ claves(pokemones(pGo)),pGo)}
 
 	\tadAxioma{estaEnElRangoDeOtroPokemon(c, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE territorioOcupado(c,posicionPokemon($\langle$dameUno(ps), obtener(dameUno(ps), pokemones(pGo))$\rangle$, pGo), mapa(pGo)) $\vee$ estaEnElRangoDeOtroPokemon(c,sinUno(ps),pGo) FI}
 	
 	\tadAxioma{restaAbsoluta(p1, p2)}{\IF p1 $\leq$ p2 THEN p2 - p1 ELSE p1 - p2 FI}
 
-	\tadAxioma{rareza(t, pGo)}{100 - dividir(cantidadPokemonesTipo(t, claves(pokemones(pGo)), pGo) * 100, \#claves(pokemones(pGo))))}
+	\tadAxioma{rareza(t, pGo)}{100 - dividir($\newline$cantidadPokemonesTipo(t, claves(pokemones(pGo)), pGo) * 100, \#claves(pokemones(pGo))))}
 
 	\tadAxioma{cantidadPokemonesTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN 0 ELSE {\IF obtener(dameUno(ps), pokemones(pGo)) = t THEN cantidadPokemonesTipo(t, sinUno(ps), pGo) + 1 ELSE cantidadPokemonesTipo(t, sinUno(ps), pGo) FI} FI}
 	
 	\tadAxioma{dividir(n, d)}{\IF n $\geq$ d THEN dividir(n-d, d) + 1 ELSE 0 FI}
   
-	\tadAxioma{sacarPokemones(ps, pGo)}{\IF $\emptyset$?(ps) THEN pokemones(pGo) ELSE borrar(dameUno(ps), sacarPokemones(sinUno(ps),pokemones(pGo))) FI} 
+	\tadAxioma{sacarPokemones(ps, pGo)}{\IF $\emptyset$?(ps) THEN pokemones(pGo) ELSE borrar(dameUno(ps), $\newline$sacarPokemones(sinUno(ps),pokemones(pGo))) FI} 
      
     \tadAxioma{estaDefTipo(t, ps, pGo)}{\IF $\emptyset$?(ps) THEN false ELSE {\IF t = obtener(dameUno(ps),pokemones(pGo)) THEN true ELSE estaDefTipo(t,sinUno(ps),pGo) FI} FI}
   
@@ -172,17 +181,17 @@
   
     \tadAxioma{esSalvajeAux(id,js,pGo)}{\IF $\emptyset$?(js) THEN true ELSE {\IF def?(id,pokemonesAtrapados(dameUno(js),pGo)) THEN false ELSE esSalvajeAux(id,sinUno(js),pGo)) FI} FI}
     
-    \tadAxioma{estaEnRangoDeAtrapar(j,pGo)}{estaEnRangoDeAtraparAux(j, claves(pokemones(pGo)))}
+    \tadAxioma{estaEnRangoDeAtrapar(j,pGo)}{estaEnRangoDeAtraparAux(j, $\newline$ claves(pokemones(pGo)))}
     
-    \tadAxioma{estaEnRangoDeAtraparAux(j,ps,pGo)}{\IF $\emptyset$?(ps) THEN false ELSE estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$,pGo), mapa(pGo)) $\vee$ estaEnRangoDeAtraparAux(j,sinUno(ps),pGo) FI}
+    \tadAxioma{estaEnRangoDeAtraparAux(j,ps,pGo)}{\IF $\emptyset$?(ps) THEN false ELSE estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\newline$ $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$, pGo), mapa(pGo)) $\vee$ $\newline$ estaEnRangoDeAtraparAux(j,sinUno(ps),pGo) FI}
 	
 	\tadAxioma{jugadoresDelRango(c,pGo)}{jugadoresDelRangoAux(c,claves(jugadores(pGo)),pGo)}
 	
-	\tadAxioma{jugadoresDelRangoAux(c,js,pGo)}{\IF $\emptyset$?(js) THEN $\emptyset$ ELSE {\IF estaConectado?(dameUno(js),pGo) THEN {\IF estanEnElMismoRango(c,posicionJugador($\langle$dameUno(js), obtener(dameUno(js), jugadores(pGo))$\rangle$)) THEN Ag(dameUno(js),jugadoresDelRangoAux(c,sinUno(js),pGo)) ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} FI}    
+	\tadAxioma{jugadoresDelRangoAux(c,js,pGo)}{\IF $\emptyset$?(js) THEN $\emptyset$ ELSE {\IF estaConectado?(dameUno(js),pGo) THEN {\IF estanEnElMismoRango(c,posicionJugador($\newline$ $\langle$dameUno(js), obtener(dameUno(js), jugadores(pGo))$\rangle$)) THEN Ag(dameUno(js), $\newline$jugadoresDelRangoAux(c,sinUno(js),pGo)) ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} ELSE jugadoresDelRangoAux(c,sinUno(js),pGo) FI} FI}    
 
 	\tadAxioma{pokemonDelRango(j,pGo)}{pokemonDelRangoAux(j,claves(pokemones(pGo)),pGo)}
 	
-	\tadAxioma{pokemonDelRangoAux(j,ps,pGo)}{\IF estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$, pGo)) THEN $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$ ELSE pokemonDelRangoAux(j,sinUno(ps),pGo) FI}
+	\tadAxioma{pokemonDelRangoAux(j,ps,pGo)}{\IF estanEnElMismoRango(posicionJugador(j,pGo), posicionPokemon($\newline$ $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$, pGo)) THEN $\langle$dameUno(ps),obtener(dameUno(ps),pokemones(pGo))$\rangle$ ELSE pokemonDelRangoAux(j,sinUno(ps),pGo) FI}
 	
 	\tadAxioma{estaConectado?(j, pGo)}{\IF obtener(j, jugadores(pGo)) = Conectado THEN true ELSE false FI}
 
